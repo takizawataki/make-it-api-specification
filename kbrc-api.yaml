@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  version: v1.1.0
+  title: 見分録クラウド REST API 仕様書
+  license:
+    name: 渡辺電機工業株式会社
+servers:
+  - url: /api
+paths:
+  # ダッシュボード
+  "/dashboards":
+    $ref: "./paths/dashboards.yml#/dashboards"
+  "/dashboards/alarm":
+    $ref: "./paths/dashboards.yml#/dashboards~1alarm"
+  "/dashboards/device":
+    $ref: "./paths/dashboards.yml#/dashboards~1device"
+
+  # アカウント
+  "/accounts":
+    $ref: "./paths/accounts.yml#/accounts"
+  "/accounts/bulk":
+    $ref: "./paths/accounts.yml#/accounts~1bulk"
+  "/accounts/{accountId}":
+    $ref: "./paths/accounts.yml#/accounts~1{accountId}"
+  "/accounts/search":
+    $ref: "./paths/accounts.yml#/accounts~1search"
+
+  # プロフィール
+  "/profiles":
+    $ref: "./paths/profiles.yml#/profiles"
+
+  # 企業
+  "/companies":
+    $ref: "./paths/companies.yml#/companies"
+  "/companies/{companyId}":
+    $ref: "./paths/companies.yml#/companies~1{companyId}"
+  "/companies/search":
+    $ref: "./paths/companies.yml#/companies~1search"
+  "/companies/list":
+    $ref: "./paths/companies.yml#/companies~1list"
+
+  # 拠点
+  "/bases":
+    $ref: "./paths/bases.yml#/bases"
+  "/bases/{baseId}":
+    $ref: "./paths/bases.yml#/bases~1{baseId}"
+  "/bases/search":
+    $ref: "./paths/bases.yml#/bases~1search"
+  "/bases/list":
+    $ref: "./paths/bases.yml#/bases~1list"
+
+  # 計測グループ
+  "/measurements":
+    $ref: "./paths/measurements.yml#/measurements"
+  "/measurements/{groupId}":
+    $ref: "./paths/measurements.yml#/measurements~1{groupId}"
+  "/measurements/search":
+    $ref: "./paths/measurements.yml#/measurements~1search"
+  "/measurements/list":
+    $ref: "./paths/measurements.yml#/measurements~1list"
+  "/measurements/{groupId}/scale":
+    $ref: "./paths/measurements.yml#/measurements~1{groupId}~1scale"
+  "/measurements/order":
+    $ref: "./paths/measurements.yml#/measurements~1order"
+
+  # 計算ポイント
+  "/calculations":
+    $ref: "./paths/calculations.yml#/calculations"
+  "/calculations/{pointId}":
+    $ref: "./paths/calculations.yml#/calculations~1{pointId}"
+  "/calculations/search":
+    $ref: "./paths/calculations.yml#/calculations~1search"
+  "/calculations/graph":
+    $ref: "./paths/calculations.yml#/calculations~1graph"
+  "/calculations/{pointId}/graph/conf":
+    $ref: "./paths/calculations.yml#/calculations~1{pointId}~1graph~1conf"
+  "/calculations/graph/points/list":
+    $ref: "./paths/calculations.yml#/calculations~1graph~1points~1list"
+
+  # ポイント
+  "/points/list":
+    $ref: "./paths/points.yml#/points~1list"
+  "/points/id/export":
+    $ref: "./paths/points.yml#/points~1id~1export"
+
+  # 記号
+  "/symbols/list":
+    $ref: "./paths/symbols.yml#/symbols~1list"
+
+  # 帳票・グラフ
+  "/reports/current":
+    $ref: "./paths/reports.yml#/reports~1current"
+  "/reports/past":
+    $ref: "./paths/reports.yml#/reports~1past"
+  "/reports/summary":
+    $ref: "./paths/reports.yml#/reports~1summary"
+  "/reports/compare":
+    $ref: "./paths/reports.yml#/reports~1compare"
+
+  # 監視ポイント
+  "/mongs/{deviceId}/search":
+    $ref: "./paths/mongs.yml#/mongs~1{deviceId}~1search"
+  "/mongs/{deviceId}":
+    $ref: "./paths/mongs.yml#/mongs~1{deviceId}"
+
+  # デバイス
+  "/devices/{deviceId}":
+    $ref: "./paths/devices.yml#/devices~1{deviceId}"
+  "/devices/link":
+    $ref: "./paths/devices.yml#/devices~1link"
+  "/devices/{deviceId}/endpoint":
+    $ref: "./paths/devices.yml#/devices~1{deviceId}~1endpoint"
+  "/devices/search":
+    $ref: "./paths/devices.yml#/devices~1search"
+  "/devices/list":
+    $ref: "./paths/devices.yml#/devices~1list"
+  "/devices/types/list":
+    $ref: "./paths/devices.yml#/devices~1types~1list"
+  "/devices/{deviceId}/wlm":
+    $ref: "./paths/devices.yml#/devices~1{deviceId}~1wlm"
+  "/devices/{deviceId}/iotgw":
+    $ref: "./paths/devices.yml#/devices~1{deviceId}~1iotgw"
+
+  # 蓄積ポイント
+  "/accumulations/list":
+    $ref: "./paths/accumulations.yml#/accumulations~1list"
+  "/accumulations/master":
+    $ref: "./paths/accumulations.yml#/accumulations~1master"
+
+  # IoTGWユニット
+  "/units":
+    $ref: "./paths/units.yml#/units"
+  "/units/{unitId}":
+    $ref: "./paths/units.yml#/units~1{unitId}"
+  "/units/search":
+    $ref: "./paths/units.yml#/units~1search"
+  "/units/list":
+    $ref: "./paths/units.yml#/units~1list"
+  "/units/types/list":
+    $ref: "./paths/units.yml#/units~1types~1list"
+
+  # 警報
+  "/alarms/history":
+    $ref: "./paths/alarms.yml#/alarms~1history"
+  "/alarms/notice":
+    $ref: "./paths/alarms.yml#/alarms~1notice"
+  "/alarms/notice/{kind}":
+    $ref: "./paths/alarms.yml#/alarms~1notice~1{kind}"
+  "/alarms/search":
+    $ref: "./paths/alarms.yml#/alarms~1search"
+  "/alarms/status":
+    $ref: "./paths/alarms.yml#/alarms~1status"
+  "/alarms/mail":
+    $ref: "./paths/alarms.yml#/alarms~1mail"
+
+  # デマンド
+  "/demands/search":
+    $ref: "./paths/demands.yml#/demands~1search"
+  "/demands/log/search":
+    $ref: "./paths/demands.yml#/demands~1log~1search"
+  "/demands/log/export":
+    $ref: "./paths/demands.yml#/demands~1log~1export"
+  "/demands/graph/wlm/{mongPointId}":
+    $ref: "./paths/demands.yml#/demands~1graph~1wlm~1{mongPointId}"
+  "/demands/graph/unit/{mongPointId}":
+    $ref: "./paths/demands.yml#/demands~1graph~1unit~1{mongPointId}"
+
+  # エクスポート
+  "/exports/point/list":
+    $ref: "./paths/exports.yml#/exports~1point~1list"
+
+  # インフォメーション
+  "/informations/search":
+    $ref: "./paths/informations.yml#/informations~1search"
+  "/informations/unread":
+    $ref: "./paths/informations.yml#/informations~1unread"
+  "/informations/read/{informationId}":
+    $ref: "./paths/informations.yml#/informations~1read~1{informationId}"
+
+  # ジョブ
+  "/jobs/{jobId}":
+    $ref: "./paths/jobs.yml#/jobs~1{jobId}"
+  "/jobs/search":
+    $ref: "./paths/jobs.yml#/jobs~1search"
+  "/jobs/point/import":
+    $ref: "./paths/jobs.yml#/jobs~1point~1import"
+  "/jobs/point/export":
+    $ref: "./paths/jobs.yml#/jobs~1point~1export"
+
+  # 制御
+  "/controls/do/{pointId}/{control}":
+    $ref: "./paths/controls.yml#/controls~1do~1{pointId}~1{control}"
+  "/controls/do/search":
+    $ref: "./paths/controls.yml#/controls~1do~1search"
+  "/controls/do/list":
+    $ref: "./paths/controls.yml#/controls~1do~1list"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: "./components/schemas/security.yml#/securitySchemes/bearerAuth"

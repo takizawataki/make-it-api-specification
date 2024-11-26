@@ -1,0 +1,370 @@
+dashboard:
+  type: array
+  description: ダッシュボード取得リクエスト
+  items:
+    type: object
+    description: パネル情報
+    required:
+      - id
+      - component
+      - w
+      - h
+    properties:
+      id:
+        type: string
+        description: パネルID
+        example: StatusWidgetDemand-default
+      component:
+        type: string
+        description: パネル名
+        example: StatusWidgetDemand
+      w:
+        type: number
+        description: 横幅
+        example: 2
+      h:
+        type: number
+        description: 縦幅
+        example: 4
+      groupId:
+        type: string
+        description: 計測グループID
+        example: 01HHP2NTYV8KFQ97GR2JEA97AP
+        minLength: 26
+        maxLength: 26
+      axisTypeLeft:
+        type: integer
+        example: 0
+        description: >
+          1軸グラフタイプ
+            * 0 - 折れ線グラフ
+            * 1 - 棒グラフ
+            * 2 - 積み上げ棒グラフ
+        enum:
+          - 0
+          - 1
+          - 2
+      axisTypeRight:
+        type: integer
+        example: 0
+        description: >
+          2軸グラフタイプ
+            * 0 - 折れ線グラフ
+            * 1 - 棒グラフ
+            * 2 - 積み上げ棒グラフ
+        enum:
+          - 0
+          - 1
+          - 2
+      dataType:
+        type: integer
+        example: 0
+        description: >
+          データ種別
+            * 0 - 日報30分
+            * 1 - 日報60分
+            * 2 - 月報
+            * 3 - 年報
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+      mongPointId:
+        type: string
+        description: デマンド監視ポイントID
+        example: 01HHP2PK2YA69DR74TQZTD2K9J
+        minLength: 26
+        maxLength: 26
+      deviceModel:
+        type: string
+        description: >
+          デバイスモデル
+            * wlm - WLMシリーズ
+            * iotgw - WGWxシリーズ
+        example: "iotgw"
+      calcPointId:
+        type: string
+        description: 計算ポイントID
+        example: 01HV3H7B4TBY39V0XRP33RQ7YQ
+        minLength: 26
+        maxLength: 26
+
+dashboardPutRequest:
+  type: array
+  description: ダッシュボード更新リクエスト
+  items:
+    type: object
+    description: パネル情報
+    required:
+      - id
+      - component
+      - w
+      - h
+    properties:
+      id:
+        type: string
+        description: パネルID
+        example: StatusWidgetDemand-default
+      component:
+        type: string
+        description: パネル名
+        example: StatusWidgetDemand
+      w:
+        type: number
+        description: 横幅
+        example: 2
+      h:
+        type: number
+        description: 縦幅
+        example: 4
+      groupId:
+        type: string
+        description: 計測グループID
+        example: 01HHP2NTYV8KFQ97GR2JEA97AP
+        minLength: 26
+        maxLength: 26
+      axisTypeLeft:
+        type: integer
+        example: 0
+        description: >
+          1軸グラフタイプ
+            * 0 - 折れ線グラフ
+            * 1 - 棒グラフ
+            * 2 - 積み上げ棒グラフ
+        enum:
+          - 0
+          - 1
+          - 2
+      axisTypeRight:
+        type: integer
+        example: 0
+        description: >
+          2軸グラフタイプ
+            * 0 - 折れ線グラフ
+            * 1 - 棒グラフ
+            * 2 - 積み上げ棒グラフ
+        enum:
+          - 0
+          - 1
+          - 2
+      dataType:
+        type: integer
+        example: 0
+        description: >
+          データ種別
+            * 0 - 日報30分
+            * 1 - 日報60分
+            * 2 - 月報
+            * 3 - 年報
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+      mongPointId:
+        type: string
+        description: デマンド監視ポイントID
+        example: 01HHP2PK2YA69DR74TQZTD2K9J
+        minLength: 26
+        maxLength: 26
+      deviceModel:
+        type: string
+        description: >
+          デバイスモデル
+            * wlm - WLMシリーズ
+            * iotgw - WGWxシリーズ
+        example: "iotgw"
+      calcPointId:
+        type: string
+        description: 計算ポイントID
+        example: 01HV3H7B4TBY39V0XRP33RQ7YQ
+        minLength: 26
+        maxLength: 26
+
+dashboardPostRequest:
+  type: array
+  description: ダッシュボード登録リクエスト
+  items:
+    type: object
+    required:
+      - id
+      - component
+      - w
+      - h
+    description: パネル情報
+    properties:
+      id:
+        type: string
+        description: パネルID
+        example: StatusWidgetDemand-default
+      component:
+        type: string
+        description: パネル名
+        example: StatusWidgetDemand
+      w:
+        type: number
+        description: 横幅
+        example: 2
+      h:
+        type: number
+        description: 縦幅
+        example: 4
+      groupId:
+        type: string
+        description: 計測グループID
+        example: 01HHP2NTYV8KFQ97GR2JEA97AP
+        minLength: 26
+        maxLength: 26
+      axisTypeLeft:
+        type: integer
+        example: 0
+        description: >
+          1軸グラフタイプ
+            * 0 - 折れ線グラフ
+            * 1 - 棒グラフ
+            * 2 - 積み上げ棒グラフ
+        enum:
+          - 0
+          - 1
+          - 2
+      axisTypeRight:
+        type: integer
+        example: 0
+        description: >
+          2軸グラフタイプ
+            * 0 - 折れ線グラフ
+            * 1 - 棒グラフ
+            * 2 - 積み上げ棒グラフ
+        enum:
+          - 0
+          - 1
+          - 2
+      dataType:
+        type: integer
+        example: 0
+        description: >
+          データ種別
+            * 0 - 日報30分
+            * 1 - 日報60分
+            * 2 - 月報
+            * 3 - 年報
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+      mongPointId:
+        type: string
+        description: デマンド監視ポイントID
+        example: 01HHP2PK2YA69DR74TQZTD2K9J
+        minLength: 26
+        maxLength: 26
+      deviceModel:
+        type: string
+        description: >
+          デバイスモデル
+            * wlm - WLMシリーズ
+            * iotgw - WGWxシリーズ
+        example: "iotgw"
+      calcPointId:
+        type: string
+        description: 計算ポイントID
+        example: 01HV3H7B4TBY39V0XRP33RQ7YQ
+        minLength: 26
+        maxLength: 26
+
+alarmSummaryResult:
+  type: object
+  description: 警報状態取得レスポンス
+  properties:
+    demand:
+      type: object
+      required:
+        - attention
+        - block
+        - excess
+      properties:
+        attention:
+          type: number
+          description: デマンド注意警報発生中のポイント数
+          example: 0
+        block:
+          type: number
+          description: デマンド遮断警報発生中のポイント数
+          example: 0
+        excess:
+          type: number
+          description: デマンド超過警報発生中のポイント数
+          example: 0
+    threshold:
+      type: object
+      required:
+        - onOff
+        - offOn
+        - upper
+        - lower
+      properties:
+        offOn:
+          type: number
+          description: しきい値OFF→ON警報発生中のポイント数
+          example: 0
+        onOff:
+          type: number
+          description: しきい値ON→OFF警報発生中のポイント数
+          example: 0
+        upper:
+          type: number
+          description: しきい値上限警報発生中のポイント数
+          example: 0
+        lower:
+          type: number
+          description: しきい値下限警報発生中のポイント数
+          example: 0
+
+deviceSummaryResult:
+  type: object
+  description: デバイス状態取得レスポンス
+  properties:
+    aliveStatus:
+      type: object
+      required:
+        - check
+      properties:
+        check:
+          type: number
+          description: 死活警報発生中のデバイス数
+          example: 0
+    signalStatus:
+      type: object
+      required:
+        - signal1
+        - signal2
+        - noSignal
+      properties:
+        signal1:
+          type: number
+          description: 電波状態 "1" RSRP < 20 のデバイス数
+          example: 0
+        signal2:
+          type: number
+          description: 電波状態 "2" 20 ≦ RSRP < 41 のデバイス数
+          example: 0
+        noSignal:
+          type: number
+          description: 電波状態 "?" RSRP = 255 のデバイス数
+          example: 0
+    batteryStatus:
+      type: object
+      required:
+        - low
+        - empty
+      properties:
+        low:
+          type: number
+          description: 電池残量減少のデバイス数
+          example: 0
+        empty:
+          type: number
+          description: 電池残量なしのデバイス数
+          example: 0

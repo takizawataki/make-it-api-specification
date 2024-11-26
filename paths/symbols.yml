@@ -1,0 +1,42 @@
+"symbols/list":
+  get:
+    summary: 記号一覧取得
+    description: "記号IDと記号名 (記号単位: 単位名称) の一覧を取得する。"
+    tags:
+      - 記号
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: excludepf
+        required: false
+        description: 力率を除外する
+        schema:
+          type: boolean
+          default: false
+          example: true
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/symbols.yml#/symbolList"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

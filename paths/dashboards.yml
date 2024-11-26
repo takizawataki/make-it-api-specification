@@ -1,0 +1,299 @@
+"dashboards":
+  get:
+    summary: ダッシュボード設定取得
+    description: 対象ユーザーのダッシュボード設定を取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - ダッシュボード
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/dashboards.yml#/dashboard"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+  post:
+    summary: ダッシュボード設定登録
+    description: 対象ユーザーのダッシュボード設定を追加する。
+    security:
+      - bearerAuth: []
+    tags:
+      - ダッシュボード
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/dashboards.yml#/dashboardPostRequest"
+    responses:
+      "201":
+        description: 正常終了 (Created)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+  put:
+    summary: ダッシュボード設定更新
+    description: ダッシュボード設定を更新する。
+    tags:
+      - ダッシュボード
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/dashboards.yml#/dashboardPutRequest"
+    responses:
+      "204":
+        description: 正常終了 (No Content)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+  delete:
+    summary: ダッシュボード設定初期化
+    description: ダッシュボード設定を1件削除する。
+    tags:
+      - ダッシュボード
+    security:
+      - bearerAuth: []
+    responses:
+      "204":
+        description: 正常終了
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"dashboards/alarm":
+  get:
+    summary: 警報状態取得
+    description: 警報状態を取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - ダッシュボード
+    parameters:
+      - in: query
+        name: mode
+        required: false
+        description: >
+          モード
+            * 1 - デマンド
+            * 2 - しきい値
+            * 3 - デマンド | しきい値
+        schema:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          default: 3
+          example: 2
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/dashboards.yml#/alarmSummaryResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"dashboards/device":
+  get:
+    summary: デバイス状態取得
+    description: デバイス状態を取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - ダッシュボード
+    parameters:
+      - in: query
+        name: mode
+        required: false
+        description: >
+          モード
+            * 1 - 電池状態
+            * 2 - 電波状態
+            * 3 - 電波状態 | 電池状態
+            * 4 - 死活状態
+            * 5 - 死活状態 | 電池状態
+            * 6 - 死活状態 | 電波状態
+            * 7 - 死活状態 | 電波状態 | 電池状態
+        schema:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+          default: 7
+          example: 2
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/dashboards.yml#/deviceSummaryResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

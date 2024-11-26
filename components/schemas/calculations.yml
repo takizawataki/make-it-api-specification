@@ -1,0 +1,728 @@
+pointId:
+  type: string
+  minLength: 26
+  maxLength: 26
+  example: 01G6F4BAFXY7B9VVQR7V216HJV
+  description: 計算ポイントID
+
+pathPointId:
+  name: pointId
+  in: path
+  required: true
+  schema:
+    $ref: "./calculations.yml#/pointId"
+
+calculation:
+  type: object
+  required:
+    - pointId
+    - baseId
+    - baseName
+    - calcPointName
+    - symbolId
+    - symbolName
+    - references
+    - monthGraphFlag
+    - points
+  description: 計算ポイントオブジェクト
+  properties:
+    pointId:
+      type: string
+      description: 計算ポイントID
+      minLength: 26
+      maxLength: 26
+      example: 01G6F4BAFXY7B9VVQR7V216HJV
+    baseId:
+      type: string
+      description: 拠点ID
+      minLength: 26
+      maxLength: 26
+      nullable: true
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+    baseName:
+      type: string
+      description: 拠点グループ名
+      minLength: 1
+      maxLength: 50
+      nullable: true
+      example: 調布工場
+    calcPointName:
+      type: string
+      description: 計算ポイント名
+      minLength: 1
+      maxLength: 50
+      example: 計算ポイント1
+    symbolId:
+      type: string
+      description: 記号ID
+      minLength: 26
+      maxLength: 26
+      example: 01G6F4BXG8TFMPGDR5HKW28B0F
+    symbolName:
+      type: string
+      description: "記号名 (記号単位:単位名称)"
+      minLength: 3
+      maxLength: 67
+      example: "kW:有効電力"
+    references:
+      type: array
+      description: 参照されている計算ポイントリスト
+      items:
+        type: string
+        minLength: 1
+        maxLength: 103
+      example:
+        [
+          "[企業名] 計算ポイントB",
+          "[企業名] 計算ポイントD",
+          "[拠点グループ名] 計算ポイントE",
+        ]
+    monthGraphFlag:
+      type: integer
+      description: >
+        月グラフ表示フラグ
+          * 0 - 非表示
+          * 1 - 表示
+      enum:
+        - 0
+        - 1
+      default: 0
+      example: 0
+    points:
+      type: array
+      description: 計算ポイントリスト
+      items:
+        type: object
+        required:
+          - dispNo
+          - deviceName
+          - pointId
+          - pointType
+          - pointName
+          - symbolId
+          - unit
+          - addSub
+          - mulDiv
+          - constValue
+        properties:
+          dispNo:
+            type: integer
+            description: 表示番号
+            minimum: 0
+            example: 1
+          deviceName:
+            type: string
+            nullable: true
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: CT_調布1F
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          pointType:
+            type: integer
+            description: >
+              ポイント種別
+                * 0 - 蓄積
+                * 1 - 計算
+            enum:
+              - 0
+              - 1
+            example: 0
+          pointName:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: ポイント1
+          symbolId:
+            type: string
+            description: 記号ID
+            minLength: 26
+            maxLength: 26
+            example: 01GS7869ARBZPDK79F3F8XB57Y
+          unit:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: V
+          addSub:
+            type: integer
+            description: >
+              加減算区分
+                * 0 - 加算
+                * 1 - 減算
+            enum:
+              - 0
+              - 1
+            example: 0
+          mulDiv:
+            type: integer
+            description: >
+              乗除算区分
+                * 0 - 乗算
+                * 1 - 除算
+            enum:
+              - 0
+              - 1
+            example: 1
+          constValue:
+            type: number
+            description: 定数値
+            example: 2.5
+    mulDivPoint:
+      type: object
+      description: 乗除ポイント(存在しない場合は省略)
+      required:
+        - dispNo
+        - deviceName
+        - pointId
+        - pointType
+        - pointName
+        - symbolId
+        - unit
+        - mulDiv
+      properties:
+        dispNo:
+          type: integer
+          description: 表示番号
+          minimum: 255
+          maximum: 255
+          example: 255
+        deviceName:
+          type: string
+          nullable: true
+          description: デバイス名
+          minLength: 1
+          maxLength: 50
+          example: CT_調布1F
+        pointId:
+          type: string
+          description: ポイントID
+          minLength: 26
+          maxLength: 26
+          example: 01G5JM8ACAGPDWQP3FPWD82H3S
+        pointType:
+          type: integer
+          description: >
+            ポイント種別
+              * 0 - 蓄積
+              * 1 - 計算
+          enum:
+            - 0
+            - 1
+          example: 0
+        pointName:
+          type: string
+          description: ポイント名
+          minLength: 1
+          maxLength: 50
+          example: ポイント1
+        symbolId:
+          type: string
+          description: 記号ID
+          minLength: 26
+          maxLength: 26
+          example: 01GS7869ARBZPDK79F3F8XB57Y
+        unit:
+          type: string
+          description: 記号単位
+          minLength: 1
+          maxLength: 16
+          example: V
+        mulDiv:
+          type: integer
+          description: >
+            乗除算区分
+              * 0 - 乗算
+              * 1 - 除算
+          enum:
+            - 0
+            - 1
+          example: 1
+
+calculationsPostRequest:
+  type: object
+  required:
+    - pointName
+    - symbolId
+    - points
+  description: 計算ポイント登録リクエスト
+  properties:
+    baseId:
+      type: string
+      description: 拠点ID
+      minLength: 26
+      maxLength: 26
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+      default: null
+    pointName:
+      type: string
+      description: 計算ポイント名
+      minLength: 1
+      maxLength: 50
+      example: 計算ポイント1
+    symbolId:
+      type: string
+      description: 記号ID
+      minLength: 26
+      maxLength: 26
+      example: 01G6F4BXG8TFMPGDR5HKW28B0F
+    monthGraphFlag:
+      type: integer
+      description: >
+        月グラフ表示フラグ
+          * 0 - 非表示
+          * 1 - 表示
+      enum:
+        - 0
+        - 1
+      default: 0
+    points:
+      type: array
+      items:
+        type: object
+        required:
+          - dispNo
+          - pointType
+          - pointId
+        properties:
+          dispNo:
+            type: integer
+            description: 表示番号
+            minimum: 0
+            example: 0
+          pointType:
+            type: integer
+            description: >
+              ポイント種別
+                * 0 - 蓄積
+                * 1 - 計算
+            enum:
+              - 0
+              - 1
+            example: 0
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          addSub:
+            type: integer
+            description: >
+              加減算区分
+                * 0 - 加算
+                * 1 - 減算
+            enum:
+              - 0
+              - 1
+            default: 0
+            example: 0
+          mulDiv:
+            type: integer
+            description: >
+              乗除算区分
+                * 0 - 乗算
+                * 1 - 除算
+            enum:
+              - 0
+              - 1
+            default: 0
+            example: 1
+          constValue:
+            type: number
+            description: 定数値
+            default: 1.000
+            example: 2.5
+    mulDivPoint:
+      type: object
+      nullable: true
+      description: 乗除ポイント
+      required:
+        - pointType
+        - pointId
+      properties:
+        pointType:
+          type: integer
+          description: >
+            ポイント種別
+              * 0 - 蓄積
+              * 1 - 計算
+          enum:
+            - 0
+            - 1
+          example: 0
+        pointId:
+          type: string
+          description: ポイントID
+          minLength: 26
+          maxLength: 26
+          example: 01G5JM8ACAGPDWQP3FPWD82H3S
+        mulDiv:
+          type: integer
+          description: >
+            乗除算区分
+              * 0 - 乗算
+              * 1 - 除算
+          enum:
+            - 0
+            - 1
+          default: 0
+          example: 1
+
+calculationsPutRequest:
+  type: object
+  required:
+    - calcPointName
+    - symbolId
+    - points
+  description: 計算ポイント更新リクエスト
+  properties:
+    pointName:
+      type: string
+      description: 計算ポイント名
+      minLength: 1
+      maxLength: 50
+      example: 計算ポイント1
+    symbolId:
+      type: string
+      description: 記号ID
+      minLength: 26
+      maxLength: 26
+      example: 01G6F4BXG8TFMPGDR5HKW28B0F
+    monthGraphFlag:
+      type: integer
+      description: >
+        月グラフ表示フラグ
+          * 0 - 非表示
+          * 1 - 表示
+      enum:
+        - 0
+        - 1
+      default: 0
+    points:
+      type: array
+      items:
+        type: object
+        required:
+          - dispNo
+          - pointType
+          - pointId
+        properties:
+          dispNo:
+            type: integer
+            description: 表示番号
+            minimum: 0
+            example: 0
+          pointType:
+            type: integer
+            description: >
+              ポイント種別
+                * 0 - 蓄積
+                * 1 - 計算
+            enum:
+              - 0
+              - 1
+            example: 0
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          addSub:
+            type: integer
+            description: >
+              加減算区分
+                * 0 - 加算
+                * 1 - 減算
+            enum:
+              - 0
+              - 1
+            default: 0
+            example: 0
+          mulDiv:
+            type: integer
+            description: >
+              乗除算区分
+                * 0 - 乗算
+                * 1 - 除算
+            enum:
+              - 0
+              - 1
+            default: 0
+            example: 1
+          constValue:
+            type: number
+            description: 定数値
+            default: 1.000
+            example: 2.5
+    mulDivPoint:
+      type: object
+      nullable: true
+      description: 乗除ポイント
+      required:
+        - pointType
+        - pointId
+      properties:
+        pointType:
+          type: integer
+          description: >
+            ポイント種別
+              * 0 - 蓄積
+              * 1 - 計算
+          enum:
+            - 0
+            - 1
+          example: 0
+        pointId:
+          type: string
+          description: ポイントID
+          minLength: 26
+          maxLength: 26
+          example: 01G5JM8ACAGPDWQP3FPWD82H3S
+        mulDiv:
+          type: integer
+          description: >
+            乗除算区分
+              * 0 - 乗算
+              * 1 - 除算
+          enum:
+            - 0
+            - 1
+          default: 0
+          example: 1
+
+calculationSearchResult:
+  type: object
+  description: 計算ポイント検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 3
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 176
+    results:
+      type: array
+      items:
+        type: object
+        description: 計算ポイント情報
+        required:
+          - baseName
+          - pointId
+          - pointName
+          - symbol
+        properties:
+          baseName:
+            type: string
+            description: 拠点グループ名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: 調布工場
+          pointId:
+            type: string
+            description: 計算ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G6F4BAFXY7B9VVQR7V216HJV
+          pointName:
+            type: string
+            description: 計算ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 工場A稼働率
+          symbol:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: kWh
+
+calculationGraphGetResult:
+  type: object
+  description: 使用量グラフ取得結果
+  required:
+    - units
+    - pointValues
+    - compareValues
+    - times
+    - status
+    - compareTo
+    - isManualScale
+  properties:
+    units:
+      type: array
+      description: 単位
+      items:
+        type: object
+        required:
+          - symbol
+          - name
+        properties:
+          symbol:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: kW
+          name:
+            type: string
+            description: 単位名称
+            minLength: 1
+            maxLength: 50
+            example: 有効電力
+          max:
+            type: number
+            description: スケール最大値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: 0
+          min:
+            type: number
+            description: スケール最小値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: -100
+        minItems: 1
+        maxItems: 1
+    pointValues:
+      type: array
+      description: 計算値
+      items:
+        type: number
+        nullable: true
+        minimum: -999999999.9999
+        maximum: 999999999.9999
+      example: ["1111.1111", "2222.2222", null, null]
+    compareValues:
+      type: array
+      description: 比較対象値
+      items:
+        type: number
+        nullable: true
+        minimum: -999999999.9999
+        maximum: 999999999.9999
+      example: ["1111.1111", "2222.2222", "3333.3333", "4444.4444"]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+      example:
+        [
+          "2024-03-01 00:00:00",
+          "2024-03-02 00:00:00",
+          "2024-03-03 00:00:00",
+          "2024-03-31 00:00:00",
+        ]
+    status:
+      type: integer
+      description: >
+        状態
+          * 0 - 好調
+          * 1 - 普通
+          * 2 - 不調
+          * 3 - 比較対象データ無し
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+      example: 0
+    compareTo:
+      type: integer
+      description: >
+        比較対象
+          * 0 - 前月
+          * 1 - 前年
+          * 2 - 目標値
+      enum:
+        - 0
+        - 1
+        - 2
+      example: 0
+    targetValue:
+      type: integer
+      description: 目標値(未設定の場合は省略)
+      minimum: 0
+      maximum: 999999999
+      example: 10000
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+
+calculationsGraphConfPutRequest:
+  type: object
+  description: 使用量グラフ設定更新リクエスト
+  properties:
+    isManualScale:
+      type: integer
+      description: 手動スケールフラグ (0 - 無効, 1 - 有効)
+      enum: [0, 1]
+      default: 0
+    axis1ScaleMax:
+      type: number
+      description: 1軸スケール最大値
+      example: 10.0
+      multipleOf: 0.0001
+    axis1ScaleMin:
+      type: number
+      description: 1軸スケール最小値
+      example: 0
+      multipleOf: 0.0001
+    targetValue:
+      type: integer
+      description: 目標値
+      example: 10
+    compareTo:
+      type: integer
+      description: 比較対象 (0 - 前月, 1 - 前年, 2 - 目標値)
+      enum: [0, 1, 2]
+      default: 0
+      example: 0
+
+calculationGraphPointsListResult:
+  type: array
+  description: 使用量グラフ表示対象ポイント一覧
+  items:
+    type: object
+    description: 計算ポイント情報
+    required:
+      - pointId
+      - pointName
+    properties:
+      pointId:
+        $ref: "./calculations.yml#/pointId"
+      pointName:
+        type: string
+        description: 計算ポイント名
+        minLength: 1
+        maxLength: 50
+        example: 工場A稼働率

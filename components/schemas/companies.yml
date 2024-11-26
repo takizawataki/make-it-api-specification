@@ -1,0 +1,406 @@
+company:
+  type: object
+  description: 企業オブジェクト
+  required:
+    - companyName
+    - fyStartMonth
+    - registration
+    - contactName
+    - mailAddress
+    - tel
+  properties:
+    parentName:
+      type: string
+      description: 親企業名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺電機工業株式会社
+    companyName:
+      type: string
+      description: 企業名
+      minLength: 1
+      maxLength: 50
+      example: 電機工業
+    fyStartMonth:
+      type: integer
+      description: 事業年度開始月
+      minimum: 1
+      maximum: 12
+      example: 4
+    registration:
+      type: string
+      description: 登録年月
+      minLength: 7
+      maxLength: 7
+      example: "2023/05"
+    contactName:
+      type: string
+      description: 担当者名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺 太郎
+    mailAddress:
+      type: string
+      description: メールアドレス
+      minLength: 3
+      maxLength: 128
+      example: taro.watanabe@kenbunroku.com
+    tel:
+      type: string
+      description: 電話番号
+      minLength: 1
+      maxLength: 20
+      example: 03-3400-6141
+    summary:
+      type: object
+      required:
+        - wlmDevices
+        - wgwxDevices
+        - totalDevices
+        - wlmPoints
+        - wgwxPoints
+        - accuPoints
+        - calcPoints
+        - totalPoints
+      description: 登録情報 (自企業のみ)
+      properties:
+        wlmDevices:
+          type: integer
+          description: WLMシリーズ デバイス登録数
+          minimum: 0
+          example: 1
+        wgwxDevices:
+          type: integer
+          description: WGWxシリーズ デバイス登録数
+          minimum: 0
+          example: 4
+        totalDevices:
+          type: integer
+          description: デバイス登録数
+          minimum: 0
+          example: 5
+        wlmPoints:
+          type: integer
+          description: WLMシリーズ ポイント数
+          minimum: 0
+          example: 3
+        wgwxPoints:
+          type: integer
+          description: WGWxシリーズ ポイント数
+          minimum: 0
+          example: 42
+        accuPoints:
+          type: integer
+          description: 蓄積ポイント数
+          minimum: 0
+          example: 45
+        calcPoints:
+          type: integer
+          description: 計算ポイント数
+          minimum: 0
+          example: 10
+        totalPoints:
+          type: integer
+          description: 合計ポイント数
+          minimum: 0
+          example: 55
+    total:
+      type: object
+      required:
+        - wlmDevices
+        - wgwxDevices
+        - totalDevices
+        - wlmPoints
+        - wgwxPoints
+        - accuPoints
+        - calcPoints
+        - totalPoints
+      description: 登録情報 (子企業含む)
+      properties:
+        wlmDevices:
+          type: integer
+          description: WLMシリーズ デバイス登録数
+          minimum: 0
+          example: 10
+        wgwxDevices:
+          type: integer
+          description: WGWxシリーズ デバイス登録数
+          minimum: 0
+          example: 5
+        totalDevices:
+          type: integer
+          description: デバイス登録数
+          minimum: 0
+          example: 15
+        wlmPoints:
+          type: integer
+          description: WLMシリーズ ポイント数
+          minimum: 0
+          example: 15
+        wgwxPoints:
+          type: integer
+          description: WGWxシリーズ ポイント数
+          minimum: 0
+          example: 30
+        accuPoints:
+          type: integer
+          description: 蓄積ポイント数
+          minimum: 0
+          example: 45
+        calcPoints:
+          type: integer
+          description: 計算ポイント数
+          minimum: 0
+          example: 15
+        totalPoints:
+          type: integer
+          description: 合計ポイント数
+          minimum: 0
+          example: 60
+
+companyPostRequest:
+  type: object
+  required:
+    - companyName
+    - fyStartMonth
+    - contactName
+    - mailAddress
+    - tel
+  description: 子企業登録リクエスト
+  properties:
+    companyName:
+      type: string
+      description: 企業名
+      minLength: 1
+      maxLength: 50
+      example: 電機工業
+    fyStartMonth:
+      type: integer
+      description: 事業年度開始月
+      minimum: 1
+      maximum: 12
+      example: 4
+    contactName:
+      type: string
+      description: 担当者名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺 太郎
+    mailAddress:
+      type: string
+      description: メールアドレス
+      minLength: 3
+      maxLength: 128
+      example: taro.watanabe@kenbunroku.com
+    tel:
+      type: string
+      description: 電話番号
+      minLength: 1
+      maxLength: 20
+      example: 03-3400-6141
+
+companyPutRequest:
+  type: object
+  description: 企業更新リクエスト
+  properties:
+    companyName:
+      type: string
+      description: 企業名
+      minLength: 1
+      maxLength: 50
+      example: 電機工業
+    contactName:
+      type: string
+      description: 担当者名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺 太郎
+    mailAddress:
+      type: string
+      description: メールアドレス
+      minLength: 3
+      maxLength: 128
+      example: taro.watanabe@kenbunroku.com
+    tel:
+      type: string
+      description: 電話番号
+      minLength: 1
+      maxLength: 20
+      example: 03-3400-6141
+
+companySearchResult:
+  type: object
+  description: 企業検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - summary
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 2
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 381
+    summary:
+      type: object
+      description: 概略
+      required:
+        - companies
+        - bases
+        - wlmDevices
+        - wgwxDevices
+        - totalDevices
+        - accuPoints
+        - calcPoints
+        - totalPoints
+      properties:
+        companies:
+          type: integer
+          description: 企業数
+          minimum: 0
+          example: 3
+        bases:
+          type: integer
+          description: 拠点数
+          minimum: 0
+          example: 10
+        wlmDevices:
+          type: integer
+          description: WLM デバイス登録数
+          minimum: 0
+          example: 2
+        wgwxDevices:
+          type: integer
+          description: WGWxシリーズ デバイス登録数
+          minimum: 0
+          example: 1
+        totalDevices:
+          type: integer
+          description: デバイス登録数
+          minimum: 0
+          example: 3
+        accuPoints:
+          type: integer
+          description: 蓄積ポイント数
+          minimum: 0
+          example: 10
+        calcPoints:
+          type: integer
+          description: 計算ポイント数
+          minimum: 0
+          example: 15
+        totalPoints:
+          type: integer
+          description: 合計ポイント数
+          minimum: 0
+          example: 25
+    results:
+      type: array
+      items:
+        type: object
+        description: 企業情報
+        required:
+          - companyId
+          - companyName
+          - registration
+          - baseCount
+          - wlmDevices
+          - wgwxDevices
+          - totalPoints
+          - accuPoints
+          - calcPoints
+          - fyStartMonth
+        properties:
+          companyId:
+            type: string
+            description: 企業ID
+            minLength: 26
+            maxLength: 26
+            example: 01G516MQ0EQD1P5E3ANR7JHN6J
+          companyName:
+            type: string
+            description: 企業名
+            minLength: 1
+            maxLength: 50
+            example: 渡辺電機工業
+          registration:
+            type: string
+            description: 登録年月
+            minLength: 7
+            maxLength: 7
+            example: "2023/05"
+          baseCount:
+            type: integer
+            description: 拠点数
+            minimum: 0
+            example: 5
+          wlmDevices:
+            type: integer
+            description: WLMシリーズ デバイス登録数
+            minimum: 0
+            example: 2
+          wgwxDevices:
+            type: integer
+            description: WGWxシリーズ デバイス登録数
+            minimum: 0
+            example: 1
+          totalPoints:
+            type: integer
+            description: 合計ポイント数
+            minimum: 0
+            example: 15
+          accuPoints:
+            type: integer
+            description: 蓄積ポイント数
+            minimum: 0
+            example: 10
+          calcPoints:
+            type: integer
+            description: 計算ポイント数
+            minimum: 0
+            example: 5
+          fyStartMonth:
+            type: string
+            description: 事業年度開始月
+            minLength: 2
+            maxLength: 3
+            example: 4月
+
+companyList:
+  type: array
+  description: 企業一覧
+  items:
+    type: object
+    description: 企業情報
+    required:
+      - companyId
+      - companyName
+    properties:
+      companyId:
+        type: string
+        description: 企業ID
+        example: 01G516MQ0EQD1P5E3ANR7JHN6J
+        minLength: 26
+        maxLength: 26
+      companyName:
+        type: string
+        description: 企業名
+        minLength: 1
+        maxLength: 50
+        example: ABC株式会社

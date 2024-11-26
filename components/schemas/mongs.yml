@@ -1,0 +1,173 @@
+mongSearchResult:
+  type: object
+  description: 監視ポイント検索結果
+  properties:
+    perDeviceCount:
+      type: integer
+      description: デバイス辺りの監視ポイント件数
+      minimum: 0
+      example: 176
+    results:
+      type: array
+      items:
+        type: object
+        description: 監視ポイント情報
+        properties:
+          mongPointId:
+            type: string
+            description: 監視ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G6EQCN5PR7CMVTG8JHME74NX
+          mongPointName:
+            type: string
+            description: 監視ポイント名
+            minLength: 50
+            maxLength: 50
+            example: 電流上限A
+          unitId:
+            type: string
+            description: ユニットID
+            minLength: 26
+            maxLength: 26
+            example: 01G6EQCN5PR7CMVTG8JHME74QK
+          unitName:
+            type: string
+            description: ユニット名
+            minLength: 50
+            maxLength: 50
+            example: ユニットA
+          accuPointId:
+            type: string
+            description: 蓄積ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G6EQCN5PR7CMVTG8JHME74RJ
+          accuPointName:
+            type: string
+            description: 蓄積ポイント名
+            minLength: 50
+            maxLength: 50
+            example: DI入力A
+          mongDirection:
+            type: integer
+            description: >
+              判定方向
+                * 0 - OFF -> ON
+                * 1 - ON -> OFF
+                * 2 - 上限
+                * 3 - 下限
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+            nullable: true
+            example: 2
+          compAlarmVal:
+            type: number
+            description: 比較警報値
+            minimum: -99999.9999
+            maximum: 99999.9999
+            nullable: true
+            example: 1000.0000
+          alarmDelay:
+            type: integer
+            description: 警報発生ディレイ (秒)
+            minimum: 0
+            maximum: 86400
+            nullable: true
+            example: 60
+          returnVal:
+            type: number
+            description: 復帰値
+            minimum: -99999.9999
+            maximum: 99999.9999
+            nullable: true
+            example: 950.0000
+          alarmResetDelay:
+            type: integer
+            description: 警報復帰ディレイ (秒)
+            minimum: 0
+            maximum: 86400
+            nullable: true
+            example: 60
+
+mongPointPutRequest:
+  type: array
+  description: 監視ポイントPUT要求更新リクエスト
+  items:
+    type: object
+    required:
+      - mongPointName
+      - target
+      - operationFlag
+    properties:
+      mongPointId:
+        type: string
+        description: 監視ポイントID
+        minLength: 26
+        maxLength: 26
+        example: 01G6EQCN5PR7CMVTG8JHME74NX
+      mongPointName:
+        type: string
+        description: 監視ポイント名
+        minLength: 1
+        maxLength: 50
+        example: 電流上限A
+      accuPointId:
+        type: string
+        description: 蓄積ポイントID
+        minLength: 26
+        maxLength: 26
+        example: 01G6EQCN5PR7CMVTG8JHME74RJ
+      mongDirection:
+        type: integer
+        description: >
+          判定方向
+            * 0 - OFF -> ON
+            * 1 - ON -> OFF
+            * 2 - 上限
+            * 3 - 下限
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+        example: 2
+      compAlarmVal:
+        type: number
+        description: 比較警報値(判定方向 = 0, 2の場合、復帰値以上。判定方向 = 1, 3の場合、復帰値以下)
+        minimum: -99999.9999
+        maximum: 99999.9999
+        example: 1000.0000
+      alarmDelay:
+        type: integer
+        description: 警報発生ディレイ (秒)
+        minimum: 0
+        maximum: 86400
+        example: 60
+      returnVal:
+        type: number
+        description: 復帰値(判定方向 = 0, 2の場合、比較警報値以下。判定方向 = 1, 3の場合、比較警報値以上)
+        minimum: -99999.9999
+        maximum: 99999.9999
+        example: 950.0000
+      alarmResetDelay:
+        type: integer
+        description: 警報復帰ディレイ (秒)
+        minimum: 0
+        maximum: 86400
+        example: 60
+      operationFlag:
+        type: integer
+        description: >
+          操作フラグ
+            * 0: 追加
+            * 1: 更新
+            * 2: 削除
+        enum:
+          - 0
+          - 1
+          - 2
+        example: 0

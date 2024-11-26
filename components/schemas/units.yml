@@ -1,0 +1,1220 @@
+unitReference:
+  comment:
+    type: string
+    description: コメント
+    nullable: true
+    example: 任意のコメント
+  unitTypeId:
+    type: string
+    description: ユニット種別ID
+    minLength: 26
+    maxLength: 26
+    example: 01G5JM8ACAGPDWQP3FPWD82H3S
+  unitAddress:
+    type: integer
+    description: アドレス
+    minimum: 0
+    example: 20
+  networkType:
+    type: integer
+    description: >
+      ネットワーク種別
+        * 0 - 有線
+        * 1 - 無線
+    enum:
+      - 0
+      - 1
+    example: 1
+    nullable: true
+  unitInterval:
+    type: integer
+    description: 収集周期 (分)
+    enum:
+      - 0
+      - 1
+      - 5
+      - 10
+    example: 5
+  aliveFlag:
+    type: integer
+    description: >
+      死活フラグ
+        * 0 - 無効
+        * 1 - 有効
+    enum:
+      - 0
+      - 1
+    example: 1
+  aliveCheckTime:
+    type: integer
+    description: >
+      死活判定時間 (分)
+        * 15    - 15分
+        * 30    - 30分
+        * 60    - 60分
+        * 180   - 180分
+        * 360   - 360分
+        * 720   - 720分
+        * 1440  - 1日
+        * 2880  - 2日
+    enum:
+      - 15
+      - 30
+      - 60
+      - 180
+      - 360
+      - 720
+      - 1440
+      - 2880
+    nullable: true
+    example: 180
+  isInUpdate:
+    type: boolean
+    description: 更新フラグ
+    example: false
+  # RTU(レジスタ指定)
+  endian:
+    type: integer
+    description: >
+      エンディアン
+        * 0 - ビッグ
+        * 1 - リトル
+    enum:
+      - 0
+      - 1
+    example: 1
+pointReference:
+  pointId:
+    type: string
+    description: ポイントID
+    minLength: 26
+    maxLength: 26
+    example: 01G5JM8ACAGPDWQP3FPWD82H3S
+  channel:
+    type: string
+    description: チャンネル
+    minLength: 1
+    maxLength: 32
+    nullable: true
+    example: ch1
+  channelId:
+    type: string
+    description: チャンネルID
+    minLength: 26
+    maxLength: 26
+    nullable: true
+    example: XKG5QSJ162G3QSE234HSY86ASA
+  pointModelId:
+    type: string
+    description: ポイント型式ID
+    minLength: 26
+    maxLength: 26
+    example: 01H05NXPAYR3EF5JVMGB5KED3K
+  calcMethodId:
+    type: string
+    description: 演算方法ID
+    minLength: 26
+    maxLength: 26
+    nullable: true
+    example: 01H05NYEDYZ9C11Z7NTN3TEKMC
+  calcMethod:
+    type: string
+    description: 演算方法
+    minLength: 1
+    maxLength: 32
+    nullable: true
+    example: 平均値
+  calcFlag:
+    type: integer
+    description: "係数スケールフラグ [0:両方なし|1:係数|2:スケール|3:力率]"
+    enum:
+      - 0 # 両方なし
+      - 1 # 係数
+      - 2 # スケール
+      - 3 # 力率
+    example: 2
+  samplingMsec:
+    type: integer
+    description: サンプリング時間 (秒)(収集周期以下)
+    maximum: 60
+    minimum: 10
+    nullable: true
+    example: 10
+  scaleLow:
+    type: integer
+    description: スケールLOW
+    minimum: -9999.9999
+    maximum: 9999.9999
+    nullable: true
+    example: 0
+  scaleHigh:
+    type: integer
+    description: スケールHI
+    minimum: -9999.9999
+    maximum: 9999.9999
+    nullable: true
+    example: 100
+  symbolId:
+    type: string
+    description: 記号ID
+    minLength: 26
+    maxLength: 26
+    example: 01G6F4BXG8TFMPGDR5HKW28B0F
+  symbolUnit:
+    type: string
+    description: 単位
+    minLength: 1
+    maxLength: 16
+    example: kWh
+  operationFlag:
+    type: integer
+    description: >
+      操作フラグ
+        * 0: 追加
+        * 1: 更新
+        * 2: 削除
+    enum:
+      - 0
+      - 1
+      - 2
+    example: 0
+  # ポイント追加不可のリアルリンク用
+  operationFlagRiallink:
+    type: integer
+    description: >
+      操作フラグ
+        * 1: 更新
+        * 2: 削除
+    enum:
+      - 1
+      - 2
+    example: 1
+  # RTU(レジスタ指定)
+  registerTypeId:
+    type: string
+    description: レジスタ種別ID
+    minLength: 26
+    maxLength: 26
+    example: 01HS7GFYQTXKEM5MQ966KKCD37
+  registerAddress:
+    type: string
+    description: レジスタアドレス
+    minLength: 4
+    maxLength: 4
+    example: 2F01
+  registerDataFormat:
+    type: integer
+    description: >
+      データ形式
+        * 0 - ビット
+        * 1 - 符号付き2バイト
+        * 2 - 符号無し2バイト
+        * 3 - 符号付き4バイト
+        * 4 - 符号無し4バイト
+        * 5 - float型
+    enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+    example: 4
+  registerDataType:
+    type: integer
+    description: >
+      データタイプ
+        * 0 - 瞬時データ
+        * 1 - 積算データ
+    enum:
+      - 0
+      - 1
+    example: 
+  maxValue:
+    type: integer
+    description: 積算上限値
+    minimum: 0
+    maximum: 9999999999.9999
+    nullable: true
+    example: 9999999
+
+unit:
+  type: object
+  description: ユニットオブジェクト
+  required:
+    - isInUpdate
+  properties:
+    isInUpdate:
+      $ref: "./units.yml#/unitReference/isInUpdate"
+    builtinMain:
+      type: object
+      description: 本体内蔵ユニット
+      required:
+        - comment
+        - statusMismatchDelay
+        - unitInterval
+        - unitTypeName
+        - unitTypeId
+        - unitType
+        - points
+      properties:
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        statusMismatchDelay:
+          type: number
+          description: デジタル入出力状態不一致 監視ディレイ
+          minimum: 0.0
+          maximum: 3600.0
+          example: 0.5
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        unitTypeName:
+          type: string
+          description: ユニット種別名
+          minLength: 1
+          maxLength: 32
+          example: WGWB-B1-DIDO 1CH
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitType:
+          type: string
+          description: ユニット型式名
+          minLength: 1
+          maxLength: 32
+          example: main
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointId
+              - pointName
+              - channel
+              - channelId
+              - pointModelId
+              - dataType
+              - calcMethodId
+              - calcMethod
+              - calcFlag
+              - samplingMsec
+              - scaleLow
+              - scaleHigh
+              - symbolId
+              - symbolUnit
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: 
+              channel:
+                $ref: "./units.yml#/pointReference/channel"
+              channelId:
+                $ref: "./units.yml#/pointReference/channelId"
+              pointModelId:
+                $ref: "./units.yml#/pointReference/pointModelId"
+              dataType:
+                type: string
+                description: データ種別名
+                minLength: 1
+                maxLength: 32
+                example: 有効電力量
+              calcMethodId:
+                $ref: "./units.yml#/pointReference/calcMethodId"
+              calcMethod:
+                $ref: "./units.yml#/pointReference/calcMethod"
+              calcFlag:
+                $ref: "./units.yml#/pointReference/calcFlag"
+              samplingMsec:
+                $ref: "./units.yml#/pointReference/samplingMsec"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              symbolUnit:
+                $ref: "./units.yml#/pointReference/symbolUnit"
+    rtuWireless:
+      type: object
+      description: RTU/無線センサー
+      required:
+        - unitName
+        - comment
+        - unitTypeName
+        - unitTypeId
+        - unitType
+        - unitKey
+        - unitAddress
+        - networkType
+        - unitInterval
+        - aliveFlag
+        - aliveCheckTime
+        - points
+      properties:
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: 調布温度計測(3F)
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        unitTypeName:
+          type: string
+          description: ユニット種別名
+          minLength: 1
+          maxLength: 32
+          example: WMB-AI8
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitType:
+          type: string
+          description: ユニット型式名
+          minLength: 1
+          maxLength: 32
+          example: wmbai8
+        unitKey:
+          type: string
+          description: ユニットキー
+          example: "0x0106"
+        unitAddress:
+          $ref: "./units.yml#/unitReference/unitAddress"
+        networkType:
+          $ref: "./units.yml#/unitReference/networkType"
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        aliveFlag:
+          $ref: "./units.yml#/unitReference/aliveFlag"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointId
+              - pointName
+              - channel
+              - channelId
+              - pointModelId
+              - dataType
+              - calcMethodId
+              - calcMethod
+              - calcFlag
+              - samplingMsec
+              - scaleLow
+              - scaleHigh
+              - symbolId
+              - symbolUnit
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: アナログ入力計測値
+              channel:
+                $ref: "./units.yml#/pointReference/channel"
+              channelId:
+                $ref: "./units.yml#/pointReference/channelId"
+              pointModelId:
+                $ref: "./units.yml#/pointReference/pointModelId"
+              dataType:
+                type: string
+                description: データ種別名
+                minLength: 1
+                maxLength: 32
+                example: アナログ入力測定値(%)
+              calcMethodId:
+                $ref: "./units.yml#/pointReference/calcMethodId"
+              calcMethod:
+                $ref: "./units.yml#/pointReference/calcMethod"
+              calcFlag:
+                $ref: "./units.yml#/pointReference/calcFlag"
+              samplingMsec:
+                $ref: "./units.yml#/pointReference/samplingMsec"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              symbolUnit:
+                $ref: "./units.yml#/pointReference/symbolUnit"
+    rtuGeneric:
+      type: object
+      description: RTU(レジスタ指定)
+      required:
+        - unitName
+        - comment
+        - unitAddress
+        - networkType
+        - endian
+        - unitInterval
+        - aliveFlag
+        - aliveCheckTime
+        - unitType
+        - unitTypeId
+        - unitKey
+        - points
+      properties:
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: 1Fエアコン電力
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        unitAddress:
+          $ref: "./units.yml#/unitReference/unitAddress"
+        networkType:
+          $ref: "./units.yml#/unitReference/networkType"
+        endian:
+          $ref: "./units.yml#/unitReference/endian"
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        aliveFlag:
+          $ref: "./units.yml#/unitReference/aliveFlag"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitType:
+          type: string
+          description: ユニット型式名
+          minLength: 1
+          maxLength: 32
+          example: genericmodbus
+        unitKey:
+          type: string
+          description: ユニットキー
+          example: "0x0100"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointId
+              - pointName
+              - registerTypeId
+              - registerType
+              - registerAddress
+              - registerDataFormat
+              - registerDataType
+              - calcFlag
+              - maxValue
+              - scaleLow
+              - scaleHigh
+              - symbolId
+              - symbolUnit
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: アナログ入力計測値
+              registerTypeId:
+                $ref: "./units.yml#/pointReference/registerTypeId"
+              registerType:
+                type: string
+                description: レジスタ種別名
+                minLength: 1
+                maxLength: 32
+                example: 入力レジスタ
+              registerAddress:
+                $ref: "./units.yml#/pointReference/registerAddress"
+              registerDataFormat:
+                $ref: "./units.yml#/pointReference/registerDataFormat"
+              registerDataType:
+                $ref: "./units.yml#/pointReference/registerDataType"
+              calcFlag:
+                $ref: "./units.yml#/pointReference/calcFlag"
+              maxValue:
+                $ref: "./units.yml#/pointReference/maxValue"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              symbolUnit:
+                $ref: "./units.yml#/pointReference/symbolUnit"
+    riallink:
+      type: object
+      description: リアルリンク
+      required:
+        - unitName
+        - comment
+        - aliveFlag
+        - aliveCheckTime
+        - unitType
+        - unitTypeId
+        - points
+      properties:
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: WJM-1 232C-LAN-LON
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        aliveFlag:
+          $ref: "./units.yml#/unitReference/aliveFlag"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        unitType:
+          type: string
+          description: ユニット型式名
+          minLength: 1
+          maxLength: 32
+          example: riallink
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointId
+              - pointName
+              - accuInterval
+              - lonName
+              - lonUnitName
+              - lonTypeName
+              - symbolId
+              - symbolUnit
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: 受電電力量
+              accuInterval:
+                type: integer
+                description: 収集周期(分)
+                enum:
+                  - 1
+                  - 5
+                  - 10
+                example: 10
+              lonName:
+                type: string
+                description: 機器名
+                minLength: 1
+                maxLength: 16
+                example: ユニット本体
+              lonUnitName:
+                type: string
+                description: ユニット情報
+                minLength: 1
+                maxLength: 13
+                example: C
+              lonTypeName:
+                type: string
+                description: データ種別
+                minLength: 1
+                maxLength: 32
+                example: 有効電力量
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              symbolUnit:
+                $ref: "./units.yml#/pointReference/symbolUnit"
+unitPutRequest:
+  type: object
+  description: ユニットPUT要求更新リクエスト
+  properties:
+    builtinMain:
+      type: object
+      description: 本体内蔵ユニット
+      required:
+        - unitTypeId
+        - statusMismatchDelay
+        - unitInterval
+        - points
+      properties:
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        statusMismatchDelay:
+          type: number
+          description: デジタル入出力状態不一致 監視ディレイ
+          minimum: 0.0
+          maximum: 3600.0
+          example: 0.5
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointName
+              - pointModelId
+              - symbolId
+              - operationFlag
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: 電灯DO
+              channelId:
+                $ref: "./units.yml#/pointReference/channelId"
+              pointModelId:
+                $ref: "./units.yml#/pointReference/pointModelId"
+              calcMethodId:
+                $ref: "./units.yml#/pointReference/calcMethodId"
+              samplingMsec:
+                $ref: "./units.yml#/pointReference/samplingMsec"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              operationFlag:
+                $ref: "./units.yml#/pointReference/operationFlag"
+    rtuWireless:
+      type: object
+      description: RTU/無線センサー
+      required:
+        - unitName
+        - unitTypeId
+        - unitAddress
+        - networkType 
+        - unitInterval
+        - points
+      properties:
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: 調布温度計測(3F)
+        unitAddress:
+          $ref: "./units.yml#/unitReference/unitAddress"
+        networkType:
+          $ref: "./units.yml#/unitReference/networkType"
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointName
+              - pointModelId
+              - symbolId
+              - operationFlag
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: アナログ入力計測値
+              channelId:
+                $ref: "./units.yml#/pointReference/channelId"
+              pointModelId:
+                $ref: "./units.yml#/pointReference/pointModelId"
+              calcMethodId:
+                $ref: "./units.yml#/pointReference/calcMethodId"
+              samplingMsec:
+                $ref: "./units.yml#/pointReference/samplingMsec"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              operationFlag:
+                $ref: "./units.yml#/pointReference/operationFlag"
+    rtuGeneric:
+      type: object
+      description: RTU(レジスタ指定)
+      required:
+        - unitTypeId
+        - unitName
+        - unitAddress
+        - networkType
+        - endian
+        - unitInterval
+        - points
+      properties:
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: 1Fエアコン電力
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        unitAddress:
+          $ref: "./units.yml#/unitReference/unitAddress"
+        networkType:
+          $ref: "./units.yml#/unitReference/networkType"
+        endian:
+          $ref: "./units.yml#/unitReference/endian"
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointName
+              - registerTypeId
+              - symbolId
+              - operationFlag
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: アナログ入力計測値
+              registerTypeId:
+                $ref: "./units.yml#/pointReference/registerTypeId"
+              registerAddress:
+                $ref: "./units.yml#/pointReference/registerAddress"
+              registerDataFormat:
+                $ref: "./units.yml#/pointReference/registerDataFormat"
+              registerDataType:
+                $ref: "./units.yml#/pointReference/registerDataType"
+              maxValue:
+                $ref: "./units.yml#/pointReference/maxValue"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              operationFlag:
+                $ref: "./units.yml#/pointReference/operationFlag"
+    riallink:
+      type: object
+      description: リアルリンク
+      required:
+        - unitTypeId
+        - unitName
+        - points
+      properties:
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: WJM-1 232C-LAN-LON
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointId
+              - pointName
+              - accuInterval
+              - registerTypeId
+              - symbolId
+              - operationFlag
+            properties:
+              pointId:
+                $ref: "./units.yml#/pointReference/pointId"
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: 受電電力量
+              accuInterval:
+                type: integer
+                description: 収集周期(分)
+                enum:
+                  - 1
+                  - 5
+                  - 10
+                example: 10
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+              operationFlag:
+                $ref: "./units.yml#/pointReference/operationFlagRiallink"
+
+unitPostRequest:
+  type: object
+  description: ユニット登録リクエスト
+  required:
+    - deviceId
+  properties:
+    deviceId:
+      type: string
+      description: デバイスID
+      minLength: 26
+      maxLength: 26
+      example: 01G6EQCN5PR7CMVTG8JHME74NX
+    rtuWireless:
+      type: object
+      description: RTU/無線センサー
+      required:
+        - unitName
+        - unitTypeId
+        - unitAddress
+        - networkType 
+        - unitInterval
+        - points
+      properties:
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: 調布温度計測(3F)
+        unitAddress:
+          $ref: "./units.yml#/unitReference/unitAddress"
+        networkType:
+          $ref: "./units.yml#/unitReference/networkType"
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointName
+              - pointModelId
+              - symbolId
+            properties:
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: アナログ入力計測値
+              channelId:
+                $ref: "./units.yml#/pointReference/channelId"
+              pointModelId:
+                $ref: "./units.yml#/pointReference/pointModelId"
+              calcMethodId:
+                $ref: "./units.yml#/pointReference/calcMethodId"
+              samplingMsec:
+                $ref: "./units.yml#/pointReference/samplingMsec"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+    rtuGeneric:
+      type: object
+      description: RTU(レジスタ指定)
+      required:
+        - unitTypeId
+        - unitName
+        - unitAddress
+        - networkType
+        - endian
+        - unitInterval
+        - points
+      properties:
+        unitTypeId:
+          $ref: "./units.yml#/unitReference/unitTypeId"
+        unitName:
+          type: string
+          description: ユニット名
+          minLength: 1
+          maxLength: 32
+          example: 1Fエアコン電力
+        comment:
+          $ref: "./units.yml#/unitReference/comment"
+        unitAddress:
+          $ref: "./units.yml#/unitReference/unitAddress"
+        networkType:
+          $ref: "./units.yml#/unitReference/networkType"
+        endian:
+          $ref: "./units.yml#/unitReference/endian"
+        unitInterval:
+          $ref: "./units.yml#/unitReference/unitInterval"
+        aliveCheckTime:
+          $ref: "./units.yml#/unitReference/aliveCheckTime"
+        points:
+          type: array
+          description: ポイントリスト
+          items:
+            type: object
+            required:
+              - pointName
+              - registerTypeId
+              - registerAddress
+              - registerDataFormat
+              - registerDataType
+              - symbolId
+            properties:
+              pointName:
+                type: string
+                description: ポイント名
+                minLength: 1
+                maxLength: 50
+                example: アナログ入力計測値
+              registerTypeId:
+                $ref: "./units.yml#/pointReference/registerTypeId"
+              registerAddress:
+                $ref: "./units.yml#/pointReference/registerAddress"
+              registerDataFormat:
+                $ref: "./units.yml#/pointReference/registerDataFormat"
+              registerDataType:
+                $ref: "./units.yml#/pointReference/registerDataType"
+              maxValue:
+                $ref: "./units.yml#/pointReference/maxValue"
+              scaleLow:
+                $ref: "./units.yml#/pointReference/scaleLow"
+              scaleHigh:
+                $ref: "./units.yml#/pointReference/scaleHigh"
+              symbolId:
+                $ref: "./units.yml#/pointReference/symbolId"
+
+unitSearchResult:
+  type: object
+  description: ユニット検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 5
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 187
+    results:
+      type: array
+      items:
+        type: object
+        properties:
+          dataType:
+            type: string
+            description: 区分
+            enum:
+              - デバイス本体
+              - RTU
+              - 無線センサー
+              - リアルリンク
+            x-enum-varnames:
+              - builtin
+              - RTU
+              - wirelessSensor
+              - riallink
+            example: 無線センサー
+          unitId:
+            type: string
+            description: ユニットID
+            minLength: 26
+            maxLength: 26
+            example: 01G51C9R4JS5A250RR0RHCEAPC
+          unitName:
+            type: string
+            description: ユニット名
+            minLength: 1
+            maxLength: 32
+            example: 調布デジタル計測(3F)
+          unitTypeName:
+            type: string
+            description: ユニット種別名
+            minLength: 1
+            maxLength: 32
+            example: WMB-DI16
+          unitAddress:
+            type: integer
+            description: アドレス
+            minimum: 0
+            example: 10
+          ipAddress:
+            type: string
+            description: IPアドレス
+            nullable: true
+            minLength: 7
+            maxLength: 15
+            example: "192.168.10.1"
+          unitInterval:
+            type: integer
+            description: 収集周期 (分)
+            enum:
+              - 0
+              - 1
+              - 5
+              - 10
+            example: 5
+          aliveStatus:
+            type: integer
+            description: >
+              死活状態
+                * 1 - 無効
+                * 2 - 正常
+                * 3 - 要確認
+            enum:
+              - 1
+              - 2
+              - 3
+            example: 0
+          signalStatus:
+            type: string
+            description: 電波状態
+            nullable: true
+            example: 100 dB
+          batteryStatus:
+            type: integer
+            description: >
+              電池状態
+                * 0 - フル
+                * 1 - 減少
+                * 2 - 残量なし
+            enum:
+              - 0
+              - 1
+              - 2
+            nullable: true
+            example: 1
+          pointCount:
+            type: integer
+            description: >
+              登録ポイント数
+            example: 1
+          isBuiltin:
+            type: boolean
+            description: 本体内蔵ユニットフラグ
+            example: false
+
+unitList:
+  type: array
+  description: ユニット一覧
+  items:
+    type: object
+    properties:
+      unitId:
+        type: string
+        description: ユニットID
+        minLength: 26
+        maxLength: 26
+        example: 01G51C9R4JS5A250RR0RHCEAPC
+      unitName:
+        type: string
+        description: ユニット名
+        minLength: 1
+        maxLength: 32
+        example: 工作機A_電流計測
+
+unitTypesList:
+  type: object
+  description: ユニット種別一覧
+  properties:
+    aliveFlag:
+      type: integer
+      description: >
+        死活フラグ
+          * 0 - 無効
+          * 1 - 有効
+      enum:
+        - 0
+        - 1
+      example: 1
+    deviceModel:
+      type: string
+      description: デバイス型式
+      minLength: 1
+      maxLength: 32
+      example: WGWB-B1-XXXXX-X00-XX1
+    model:
+      type: array
+      description: ユニット種別一覧
+      items:
+        type: object
+        properties:
+          unitTypeId:
+            type: string
+            description: ユニット種別ID
+            minLength: 26
+            maxLength: 26
+            example: 01G51C9R4JS5A250RR0RHCEAPC
+          unitTypeName:
+            type: string
+            description: ユニット種別名
+            minLength: 1
+            maxLength: 32
+            example: WMB DIO8R
+          channelCount:
+            type: integer
+            description: チャンネル数
+            example: 0
+          dataType:
+            type: integer
+            description: 区分
+            example: 0
+          unitType:
+            type: string
+            description: ユニット型式名
+            example: wmbdio8r

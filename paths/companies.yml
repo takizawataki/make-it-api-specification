@@ -1,0 +1,382 @@
+"companies":
+  post:
+    summary: 企業登録
+    description: 子企業を1件登録する。
+    security:
+      - bearerAuth: []
+    tags:
+      - 企業
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/companies.yml#/companyPostRequest"
+    responses:
+      "201":
+        description: 正常終了 (Created)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"companies/{companyId}":
+  get:
+    summary: 企業取得
+    description: 企業を1件取得する。
+    tags:
+      - 企業
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: companyId
+        required: true
+        description: 企業ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G516MQ0EQD1P5E3ANR7JHN6J
+      - in: query
+        name: additional
+        required: false
+        description: >
+          登録データもレスポンスに含める
+            * true  - 含める
+            * false - 含めない
+        schema:
+          type: boolean
+          default: false
+          example: true
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/companies.yml#/company"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+  put:
+    summary: 企業更新
+    description: 企業を1件更新する。
+    tags:
+      - 企業
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: companyId
+        required: true
+        description: 企業ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G516MQ0EQD1P5E3ANR7JHN6J
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/companies.yml#/companyPutRequest"
+    responses:
+      "204":
+        description: 正常終了 (No Content)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+  delete:
+    summary: 企業削除
+    description: 子企業を1件削除する。
+    tags:
+      - 企業
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: companyId
+        required: true
+        description: 企業ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G516MQ0EQD1P5E3ANR7JHN6J
+    responses:
+      "204":
+        description: 正常終了
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"companies/search":
+  get:
+    summary: 企業検索
+    description: 条件を指定して企業一覧を取得する。
+    tags:
+      - 企業
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: company
+        required: false
+        description: 企業名
+        schema:
+          type: string
+          minLength: 0
+          maxLength: 50
+          example: 渡辺電機
+      - in: query
+        name: page
+        required: false
+        description: ページ番号
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 1
+      - in: query
+        name: size
+        required: false
+        description: ページサイズ
+        schema:
+          type: integer
+          enum:
+            - 20
+            - 50
+            - 100
+          default: 20
+          example: 20
+      - in: query
+        name: format
+        required: false
+        description: >
+          出力フォーマット
+            * json
+            * csv
+        schema:
+          type: string
+          enum:
+            - json
+            - csv
+          default: json
+      - in: query
+        name: sort
+        required: false
+        description: >
+          ソート項目
+            * companyname   - 企業名
+            * registration  - 登録年月
+            * basecount     - 拠点数
+            * totalpoints   - 合計ポイント数
+            * fystartmonth  - 事業年度開始月
+        schema:
+          type: string
+          enum:
+            - companyname
+            - registration
+            - basecount
+            - totalpoints
+            - fystartmonth
+          default: companyname
+          example: registration
+      - in: query
+        name: order
+        required: false
+        description: >
+          ソート項目の並び順
+            * true  - 昇順
+            * false - 降順
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/companies.yml#/companySearchResult"
+          "application/octet-stream":
+            schema:
+              type: string
+              description: CSVデータはShift-JISで出力
+              example: '"親企業名","企業名","拠点数","合計ポイント数","蓄積ポイント数","計算ポイント数","WGW□登録数","WLM登録数","担当者情報(氏名)","担当者情報(メールアドレス)","担当者情報(TEL)","事業年度開始月","登録年月"\n"-","渡辺電機工業株式会社","10","150","100","50","5","25","渡辺 太郎","taro.watanabe@xxx.co.jp","03-1234-5678","4月","2021/9/1"\n"渡辺電機工業株式会社","電機工業","5","80","70","10","10","10","渡辺 次郎","jiro.watanabe@xxx.co.jp","012-345-6789","4月","2022/12/15"'
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "415":
+        description: サポートされていないメディアタイプエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"companies/list":
+  get:
+    summary: 企業一覧取得
+    description: 自企業と子企業の一覧を取得する。
+    tags:
+      - 企業
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/companies.yml#/companyList"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

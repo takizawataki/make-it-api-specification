@@ -1,0 +1,421 @@
+"units":
+  post:
+    summary: ユニット登録
+    description: ユニットとポイントリストを登録する。
+    security:
+      - bearerAuth: []
+    tags:
+      - IoTGWユニット
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/units.yml#/unitPostRequest"
+    responses:
+      "201":
+        description: 正常終了 (Created)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"units/{unitId}":
+  get:
+    summary: ユニット取得
+    description: ユニットとポイントリストを取得する。(IoTGW設定値取得)
+    tags:
+      - IoTGWユニット
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: unitId
+        required: true
+        description: ユニットID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51C9R4JS5A250RR0RHCEAPC
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/units.yml#/unit"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+  put:
+    summary: ユニット更新
+    description: ユニットとポイントリストを更新する。(IoTGW設定値更新)
+    tags:
+      - IoTGWユニット
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: unitId
+        required: true
+        description: ユニットID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51C9R4JS5A250RR0RHCEAPC
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/units.yml#/unitPutRequest"
+    responses:
+      "204":
+        description: 正常終了 (No Content)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+  delete:
+    summary: ユニット削除
+    description: ユニットとポイントリストを削除する。
+    tags:
+      - IoTGWユニット
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: unitId
+        required: true
+        description: ユニットID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51C9R4JS5A250RR0RHCEAPC
+    responses:
+      "204":
+        description: 正常終了
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "409":
+        description: 外部キー制約違反が発生
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"units/search":
+  get:
+    summary: ユニット検索
+    description: 条件を指定してユニット一覧を取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - IoTGWユニット
+    parameters:
+      - in: query
+        name: device
+        required: true
+        description: 論理デバイスID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51C9R4JS5A250RR0RHCEAPC
+      - in: query
+        name: page
+        required: false
+        description: ページ番号
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 0
+      - in: query
+        name: size
+        required: false
+        description: ページサイズ
+        schema:
+          type: integer
+          enum:
+            - 20
+            - 50
+            - 100
+          default: 20
+          example: 20
+      - in: query
+        name: sort
+        required: false
+        description: >
+          ソート項目
+            * dataType      - 区分
+            * unitName      - ユニット名
+            * unitAddress   - アドレス
+            * unitTypeName  - 種別
+            * unitInterval  - 収集周期
+            * pointCount    - 登録ポイント数
+            * aliveStatus   - 死活状態
+            * signalStatus  - 電波状態
+            * batteryStatus - 電池状態
+        schema:
+          type: string
+          enum:
+            - dataType
+            - unitName
+            - unitAddress
+            - unitTypeName
+            - unitInterval
+            - pointCount
+            - aliveStatus
+            - signalStatus
+            - batteryStatus
+          default: datatype
+          example: unitAddress
+      - in: query
+        name: order
+        required: false
+        description: >
+          ソート項目の並び順
+            * true  - 昇順
+            * false - 降順
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/units.yml#/unitSearchResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"units/list":
+  get:
+    summary: ユニット一覧取得
+    description: ユニット一覧を取得する。
+    tags:
+      - IoTGWユニット
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: device
+        required: true
+        description: デバイスID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51CDT5AK3XMHBATB5HRXN6V
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/units.yml#/unitList"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"units/types/list":
+  get:
+    summary: ユニット種別一覧取得
+    description: ユニット種別一覧を取得する。
+    tags:
+      - IoTGWユニット
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: device
+        required: true
+        description: デバイスID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51CDT5AK3XMHBATB5HRXN6V
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/units.yml#/unitTypesList"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

@@ -1,0 +1,470 @@
+demandSearchResult:
+  type: object
+  description: デマンド検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - mongCount
+    - cautionCount
+    - blockCount
+    - excessCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 2
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 124
+    mongCount:
+      type: integer
+      description: 監視中ポイント数
+      minimum: 0
+      example: 32
+    cautionCount:
+      type: integer
+      description: 注意件数
+      minimum: 0
+      example: 2
+    blockCount:
+      type: integer
+      description: 遮断件数
+      minimum: 0
+      example: 4
+    excessCount:
+      type: integer
+      description: 超過件数
+      minimum: 0
+      example: 2
+    results:
+      type: array
+      items:
+        type: object
+        properties:
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            example: 調布工場
+          mongPointId:
+            type: string
+            description: 監視ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G6EVEXVQ77AFQD7ZZH44BCJ1
+          mongPointName:
+            type: string
+            description: 監視ポイント名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: パルスカウント(上限)
+          model:
+            type: string
+            description: 型式
+            minLength: 1
+            maxLength: 30
+            example: WLM
+          state:
+            type: string
+            description: "警報状態"
+            enum:
+              - 超過
+              - 遮断
+              - 注意
+              - 正常
+            x-enum-varnames:
+              - over
+              - shutdown
+              - caution
+              - normal
+              - none
+            example: 遮断
+          tightness:
+            type: number
+            description: 逼迫度
+            nullable: true
+            example: 50
+          targetPow:
+            type: integer
+            description: 目標電力 (kW)
+            nullable: true
+            example: 300
+          predictPow:
+            type: number
+            description: 予測電力 (kW)
+            nullable: true
+            example: 250.15
+          currentPow:
+            type: number
+            description: 現在電力 (kW)
+            nullable: true
+            example: 150.26
+          adjustPow:
+            type: number
+            description: 調整電力 (kW)
+            nullable: true
+            example: 10.65
+
+demandLogSearchResult:
+  type: object
+  description: デマンドログ検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 2
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 82
+    results:
+      type: array
+      items:
+        type: object
+        properties:
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: 調布工場
+          deviceName:
+            type: string
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: 1F工場WLM
+          mongPointName:
+            type: string
+            description: 監視ポイント名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: 調布デマンド1
+
+demandGraphWlm:
+  type: object
+  description: デマンドグラフ (WLM)
+  required:
+    - companyName
+    - baseName
+    - mongPointName
+    - mongState
+    - adjustPow
+    - targetPow
+    - blockPow
+    - remainMin
+    - targetCurrentPow
+    - predictPow
+    - timeZone
+    - collectedTime
+    - delay
+    - state
+    - currentPows
+    - times
+  properties:
+    companyName:
+      type: string
+      description: 企業名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺電機工業株式会社
+    baseName:
+      type: string
+      description: 拠点名
+      minLength: 1
+      maxLength: 50
+      example: 大阪工場
+      nullable: true
+    mongPointName:
+      type: string
+      description: 監視ポイント名
+      minLength: 1
+      maxLength: 50
+      example: パルスカウント
+      nullable: true
+    mongState:
+      type: string
+      description: 監視状態
+      enum:
+        - デマンド監視停止中
+        - デマンド監視準備中
+        - デマンド監視ディレイ中
+        - デマンド監視中
+      x-enum-varnames:
+        - stopped
+        - inProgress
+        - inDelay
+        - watching
+      example: デマンド監視中
+      nullable: true
+    adjustPow:
+      type: number
+      description: 調整電力 (kW)
+      example: 283.98
+      nullable: true
+    targetPow:
+      type: integer
+      description: 目標電力 (kW)
+      minimum: 0
+      example: 440
+      nullable: true
+    blockPow:
+      type: integer
+      description: 遮断電力 (kW)
+      minimum: 0
+      example: 10
+      nullable: true
+    remainMin:
+      type: number
+      description: 残り時間
+      minimum: 0.0
+      example: 10.0
+      nullable: true
+    targetCurrentPow:
+      type: number
+      description: 目標現在電力 (kW)
+      minimum: 0.0
+      example: 400.00
+      nullable: true
+    predictPow:
+      type: number
+      description: 予測電力 (kW)
+      minimum: 0.0
+      example: 500.00
+      nullable: true
+    timeZone:
+      type: string
+      format: date-time
+      description: 時限
+      example: 2023-01-12T16:00+09:00
+      nullable: true
+    collectedTime:
+      type: string
+      format: date-time
+      description: 収集日時
+      example: 2023-01-12T16:02:00+09:00
+      nullable: true
+    delay:
+      type: string
+      format: date-time
+      description: デマンドディレイ
+      example: 2023-01-12T16:01+09:00
+      nullable: true
+    state:
+      type: string
+      enum:
+        - 時限終了
+        - 警報なし
+        - 注意警報発生中
+        - 遮断警報発生中
+      x-enum-varnames:
+        - timeOut
+        - noAlert
+        - occurringCautionAlarm
+        - occurringShutdownAlarm
+      example: 注意警報発生中
+      nullable: true
+    currentPows:
+      type: array
+      description: 現在電力
+      items:
+        type: number
+      example: [0, 10, 30]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+      example:
+        [
+          2023-01-24T16:00:00+09:00,
+          2023-01-24T16:01:00+09:00,
+          2023-01-24T16:02:00+09:00,
+        ]
+
+demandGraphUnit:
+  type: object
+  description: デマンドグラフ (IoTGW)
+  required:
+    - companyName
+    - baseName
+    - mongPointName
+    - mongState
+    - adjustPow
+    - warnPow
+    - targetPow
+    - revertPow
+    - blockPow
+    - remainMin
+    - targetCurrentPow
+    - predictPow
+    - timeZone
+    - collectedTime
+    - state
+    - currentPows
+    - times
+    - block1Flg
+    - block2Flg
+    - block3Flg
+  properties:
+    companyName:
+      type: string
+      description: 企業名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺電機工業株式会社
+    baseName:
+      type: string
+      description: 拠点名
+      minLength: 1
+      maxLength: 50
+      example: 大阪工場
+      nullable: true
+    mongPointName:
+      type: string
+      description: 監視ポイント名
+      minLength: 1
+      maxLength: 50
+      example: パルスカウント
+      nullable: true
+    adjustPow:
+      type: number
+      description: 調整電力 (kW)
+      example: 283.98
+      nullable: true
+    warnPow:
+      type: integer
+      description: 警報電力 (kW)
+      minimum: 0
+      example: 460
+      nullable: true
+    targetPow:
+      type: integer
+      description: 目標電力 (kW)
+      minimum: 0
+      example: 440
+      nullable: true
+    revertPow:
+      type: integer
+      description: 復帰電力 (kW)
+      minimum: 0
+      example: 20
+      nullable: true
+    blockPow:
+      type: integer
+      description: 遮断電力 (kW)
+      minimum: 0
+      example: 10
+      nullable: true
+    block1Flg:
+      type: boolean
+      description: 遮断状態1
+      example: false
+      nullable: true
+    block2Flg:
+      type: boolean
+      description: 遮断状態2
+      example: false
+      nullable: true
+    block3Flg:
+      type: boolean
+      description: 遮断状態3
+      example: false
+      nullable: true
+    remainMin:
+      type: number
+      description: 残り時間
+      minimum: 0.0
+      example: 10.0
+      nullable: true
+    targetCurrentPow:
+      type: number
+      description: 目標現在電力 (kW)
+      minimum: 0.0
+      example: 400.0
+      nullable: true
+    predictPow:
+      type: number
+      description: 予測電力 (kW)
+      minimum: 0.0
+      example: 500.0
+      nullable: true
+    timeZone:
+      type: string
+      format: date-time
+      description: 時限
+      example: 2023-01-12T16:00+09:00
+      nullable: true
+    collectedTime:
+      type: string
+      format: date-time
+      description: 収集日時
+      example: 2023-01-12T16:02:00+09:00
+      nullable: true
+    state:
+      type: string
+      enum:
+        - 時限終了
+        - 警報なし
+        - 注意警報発生中
+        - 遮断警報発生中
+        - 超過警報発生中
+      x-enum-varnames:
+        - timeOut
+        - noAlert
+        - occurringCautionAlarm
+        - occurringShutdownAlarm
+        - occurringOverAlarm
+      example: 注意警報発生中
+      nullable: true
+    currentPows:
+      type: array
+      description: 現在電力
+      items:
+        type: number
+      example: [0, 10, 30]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+      example:
+        [
+          2023-01-24T16:00:00+09:00,
+          2023-01-24T16:01:00+09:00,
+          2023-01-24T16:02:00+09:00,
+        ]

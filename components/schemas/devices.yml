@@ -1,0 +1,1922 @@
+devicePutRequest:
+  type: object
+  description: デバイス更新リクエスト
+  required:
+    - companyId
+    - baseId
+  properties:
+    companyId:
+      type: string
+      description: 企業ID
+      minLength: 26
+      maxLength: 26
+      example: 01G516MQ0EQD1P5E3ANR7JHN6J
+    baseId:
+      type: string
+      description: 拠点ID
+      minLength: 26
+      maxLength: 26
+      nullable: true
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+    deviceName:
+      type: string
+      description: デバイス名
+      minLength: 1
+      maxLength: 50
+      example: 電力監視用デバイス
+    aliveFlag:
+      type: integer
+      description: >
+        死活監視
+          * 0   - 無効
+          * 1   - 有効
+      enum:
+        - 0
+        - 1
+      example: 1
+    aliveCheckTime:
+      type: integer
+      description: >
+        死活判定時間 (分)
+          * 15    - 15分
+          * 30    - 30分
+          * 60    - 60分
+          * 180   - 180分
+          * 360   - 360分
+          * 720   - 720分
+          * 1440  - 1日
+          * 2880  - 2日
+      enum:
+        - 15
+        - 30
+        - 60
+        - 180
+        - 360
+        - 720
+        - 1440
+        - 2880
+      example: 180
+    memo:
+      type: string
+      description: メモ
+      minLength: 0
+      maxLength: 1000
+      example: ユーザーが任意でつけるメモ\n例えば購入日や現場設置日など。
+
+devicePutLinkRequest:
+  type: array
+  description: デバイス紐付け更新リクエスト
+  items:
+    type: object
+    required:
+      - deviceId
+      - companyId
+    properties:
+      deviceId:
+        type: string
+        description: 論理デバイスID
+        minLength: 26
+        maxLength: 26
+        example: 01G6EQCN5PR7CMVTG8JHME74NX
+      companyId:
+        type: string
+        description: 企業ID
+        minLength: 26
+        maxLength: 26
+        example: 01G516MQ0EQD1P5E3ANR7JHN6J
+      baseId:
+        type: string
+        description: 拠点ID
+        minLength: 26
+        maxLength: 26
+        nullable: true
+        example: 01G516V3EVFG5JT9YB5WD20TKN
+
+deviceSearchResult:
+  type: object
+  description: デバイス検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 2
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 381
+    results:
+      type: array
+      items:
+        type: object
+        description: デバイス情報
+        properties:
+          deviceId:
+            type: string
+            description: 論理デバイスID
+            minLength: 26
+            maxLength: 26
+            example: 01G6EQCN5PR7CMVTG8JHME74NX
+          companyName:
+            type: string
+            description: 企業名
+            minLength: 1
+            maxLength: 50
+            example: 渡辺電機工業
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: 調布工場
+          deviceName:
+            type: string
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: 調布_受電WLM
+          deviceType:
+            type: string
+            description: デバイス種別
+            minLength: 1
+            maxLength: 32
+            example: 電力パルス計測ユニット
+          aliveStatus:
+            type: integer
+            description: >
+              死活状態
+                * 1 - 無効
+                * 2 - 正常
+                * 3 - 要確認
+            enum:
+              - 1
+              - 2
+              - 3
+            example: 1
+          signalStatus:
+            type: integer
+            description: >
+              電波状態
+                * 0 - 55 ≦ RSRP
+                * 1 - 41 ≦ RSRP < 55
+                * 2 - 20 ≦ RSRP < 41
+                * 3 - RSRP < 20
+                * 4 - RSRP = 255
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+            nullable: true
+            example: 0
+          batteryStatus:
+            type: integer
+            description: >
+              電池状態
+                * 0 - 電源(コンセント)
+                * 1 - フル
+                * 2 - 減少
+                * 3 - 残量なし
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+            nullable: true
+            example: 1
+
+deviceGetLinkResponse:
+  type: object
+  description: デバイス紐付け情報
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 2
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 381
+    results:
+      type: array
+      items:
+        type: object
+        required:
+          - deviceId
+          - parentId
+          - companyId
+          - companyName
+          - baseId
+          - baseName
+          - deviceName
+          - deviceType
+          - serialNo
+          - information
+        properties:
+          deviceId:
+            type: string
+            description: 論理デバイスID
+            minLength: 26
+            maxLength: 26
+            example: 01G69X73EWAG9WVDQBW1QNMM5A
+          parentId:
+            type: string
+            description: 親企業ID
+            minLength: 26
+            maxLength: 26
+            nullable: true
+            example: 01G69X73EWAG9WVDQBW1QNMMAA
+          companyId:
+            type: string
+            description: 企業ID
+            minLength: 26
+            maxLength: 26
+            example: 01G69X73EWAG9WVDQBW1QNMMPQ
+          companyName:
+            type: string
+            description: 企業名
+            minLength: 1
+            maxLength: 50
+            example: 渡辺電機工業株式会社
+          baseId:
+            type: string
+            description: 拠点ID
+            minLength: 26
+            maxLength: 26
+            nullable: true
+            example: 01G69X73EWAG9WVDQBW1QNMMQL
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: 調布工場
+          deviceName:
+            type: string
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: 調布_受電WLM
+          deviceType:
+            type: string
+            description: デバイス種別
+            minLength: 1
+            maxLength: 32
+            example: 電力パルス計測ユニット
+          serialNo:
+            type: string
+            description: シリアルNo
+            minLength: 1
+            maxLength: 32
+            example: 22CK000001
+          information:
+            type: integer
+            description: >
+              情報
+                * 0 - 計測グループ:参照無, 計算ポイント:参照無
+                * 1 - 計測グループ:参照有, 計算ポイント:参照無
+                * 2 - 計算ポイント:参照有
+            enum:
+              - 0
+              - 1
+              - 2
+            example: 0
+
+device:
+  type: object
+  description: デバイス
+  required:
+    - device
+    - monitors
+  properties:
+    device:
+      type: object
+      description: デバイス情報
+      properties:
+        deviceId:
+          type: string
+          description: 論理デバイスID
+          minLength: 26
+          maxLength: 26
+          example: 01G69X73EWAG9WVDQBW1QNMM5A
+        physclDeviceId:
+          type: string
+          description: 物理デバイスID
+          maxLength: 50
+          example: 22CK000001
+        companyId:
+          type: string
+          description: 企業ID
+          minLength: 26
+          maxLength: 26
+          example: 01G69X73EWAG9WVDQBW1QNMMPQ
+        companyName:
+          type: string
+          description: 企業名
+          minLength: 1
+          maxLength: 50
+          example: 渡辺電機工業株式会社
+        baseId:
+          type: string
+          description: 拠点ID
+          minLength: 26
+          maxLength: 26
+          nullable: true
+          example: 01G69X73EWAG9WVDQBW1QNMMQL
+        baseName:
+          type: string
+          description: 拠点名
+          minLength: 1
+          maxLength: 50
+          nullable: true
+          example: 調布工場
+        deviceName:
+          type: string
+          description: デバイス名
+          minLength: 1
+          maxLength: 50
+          example: 調布_受電WLM
+        deviceModel:
+          type: string
+          description: デバイス型式
+          minLength: 1
+          maxLength: 32
+          example: WLM-PC1-NKN-00-LN
+        deviceType:
+          type: string
+          description: デバイス種別
+          minLength: 1
+          maxLength: 32
+          example: 電力パルス計測ユニット
+        serialNo:
+          type: string
+          description: シリアルNo
+          minLength: 1
+          maxLength: 32
+          nullable: true
+          example: 22CK000001
+        rsrp:
+          type: string
+          description: 電波状態(RSRP)[dBm]
+          nullable: true
+          example: -100dBm
+        rsrq:
+          type: string
+          description: 電波状態(RSRQ)[dB]
+          nullable: true
+          example: -10dB
+        batteryStatus:
+          type: integer
+          description: >
+            電池状態
+              * 0 - 電源(コンセント)
+              * 1 - フル
+              * 2 - 減少
+              * 3 - 残量なし
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          nullable: true
+          example: 1
+        lastAccessedAt:
+          type: string
+          format: date-time
+          description: 最終通信日
+          nullable: true
+          example: "2023-01-20T00:00:00Z"
+        aliveStatus:
+          type: integer
+          description: >
+            死活状態
+              * 1 - 無効
+              * 2 - 正常
+              * 3 - 要確認
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        aliveFlag:
+          type: integer
+          description: >
+            死活フラグ
+              * 0 - 無効
+              * 1 - 有効
+          enum:
+            - 0
+            - 1
+          example: 1
+        aliveCheckTime:
+          type: integer
+          description: >
+            死活判定時間 (分)
+              * 15    - 15分
+              * 30    - 30分
+              * 60    - 60分
+              * 180   - 180分
+              * 360   - 360分
+              * 720   - 720分
+              * 1440  - 1日
+              * 2880  - 2日
+          enum:
+            - 15
+            - 30
+            - 60
+            - 180
+            - 360
+            - 720
+            - 1440
+            - 2880
+          nullable: true
+          example: 180
+        micVersion:
+          type: string
+          description: 制御マイコンバージョン
+          minLength: 0
+          maxLength: 10
+          nullable: true
+          example: 1.1.1
+        modVersion:
+          type: string
+          description: 通信モジュールバージョン
+          minLength: 0
+          maxLength: 64
+          nullable: true
+          example: 1.1.1
+        createdAt:
+          type: string
+          format: date-time
+          description: 登録日時
+          example: "2023-01-20T00:00:00Z"
+        memo:
+          type: string
+          description: メモ
+          nullable: true
+          example: xxxxxxxxxxx
+        isUsedInCalculation:
+          type: boolean
+          description: >
+            計算ポイントでの使用有無
+              * true - 使用あり
+              * false - 使用なし
+          example: true
+        hasEndpoint:
+          type: boolean
+          description: >
+            IoTGW デバイスにおける実機アクセス用エンドポイントの有無
+              * true - 実機アクセス用エンドポイントあり
+              * false - 実機アクセス用エンドポイントなし
+          example: false
+    monitors:
+      type: object
+      description: モニタ通信データ
+      required:
+        - receivedAt
+        - measurements
+      properties:
+        receivedAt:
+          type: string
+          format: date-time
+          description: 受信日時
+          nullable: true
+          example: "2023-03-03T15:56:10Z"
+        measurements:
+          type: array
+          description: 計測値リスト
+          items:
+            type: array
+            description: 計測値
+            items:
+              type: object
+              required:
+                - label
+                - value
+              properties:
+                label:
+                  type: string
+                  description: 項目名
+                  minLength: 0
+                  example: センサーID
+                value:
+                  type: string
+                  description: 項目値
+                  minLength: 0
+                  example: Ch1
+          example:
+            - [
+                { "label": "R相電流(CT1)", "value": "133.1111A" },
+                { "label": "T相電流(CT2)", "value": "144.1111A" },
+              ]
+
+deviceList:
+  type: array
+  description: デバイス一覧
+  items:
+    type: object
+    description: デバイス情報
+    properties:
+      deviceId:
+        type: string
+        description: 論理デバイスID
+        minLength: 26
+        maxLength: 26
+        example: 01G6EQCN5PR7CMVTG8JHME74NX
+      deviceName:
+        type: string
+        description: デバイス名
+        minLength: 1
+        maxLength: 50
+        example: 調布_受電WLM
+
+deviceTypeList:
+  type: array
+  description: デバイス種別一覧
+  items:
+    type: string
+    minLength: 1
+    maxLength: 32
+    example: IoTGW遠隔デマンド版
+  example: [IoTGW遠隔デマンド版, 電力パルス計測ユニット]
+
+deviceEndpoint:
+  type: object
+  description: デバイスエンドポイント
+  required:
+    - endpoint
+  properties:
+    endpoint:
+      type: string
+      description: デバイス接続用エンドポイント
+      minLength: 15
+      maxLength: 128
+      example: http://102.12.207.105/
+
+deviceWlm:
+  type: object
+  description: WLM設定
+  required:
+    - isInUpdate
+    - accumulationSetting
+    - measurementSetting
+    - thresholdSetting
+    - serverSetting
+  properties:
+    isInUpdate:
+      type: boolean
+      description: 更新中表示判定フラグ
+      example: false
+    accumulationSetting:
+      type: object
+      description: 蓄積設定
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          required:
+            - accumPeriod
+            - accumPointName
+          properties:
+            accumPeriod:
+              type: integer
+              description: 蓄積周期 (分)
+              minimum: 0
+              example: 5
+            accumPointName:
+              type: string
+              description: 蓄積ポイント名
+              minLength: 1
+              maxLength: 50
+              example: デマンド電力
+        ct:
+          type: object
+          description: CT
+          required:
+            - accumPeriod
+          properties:
+            accumPeriod:
+              type: integer
+              description: 蓄積周期 (分)
+              minimum: 0
+              example: 5
+    measurementSetting:
+      type: object
+      description: 計測設定
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          required:
+            - coefficientVal
+          properties:
+            coefficientVal:
+              type: number
+              description: パルス係数
+              minimum: 0.0001
+              maximum: 9999.9999
+              example: 0.012
+        ct:
+          type: array
+          description: CT
+          items:
+            type: object
+            required:
+              - accumPointName
+              - phaseDivision
+              - inputRatingPower
+              - primaryRatingPower
+              - lowCut
+              - primaryA
+              - virtualVoltage
+              - virtualPowerFactor
+              - accumTarget
+            properties:
+              accumPointName:
+                type: string
+                description: 蓄積ポイント名
+                minLength: 1
+                maxLength: 50
+                example: 三相トランスNo.1 電力量
+              phaseDivision:
+                type: integer
+                description: "相線区分 [0:単相2線|1:単相3線|2:三相3線2CT|6:三相3線1CT]"
+                enum:
+                  - 0 # 単相2線
+                  - 1 # 単相3線
+                  - 2 # 三相3線2CT
+                  - 6 # 三相3線1CT
+                example: 2
+              inputRatingPower:
+                type: integer
+                description: "電流入力定格 [5:5A|200:50/100/200/400/600A]"
+                enum:
+                  - 5 # 5A
+                  - 200 # 50/100/200/400/600A
+                example: 200
+              primaryRatingPower:
+                type: integer
+                description: 電流一次定格 (A)
+                minimum: 5
+                maximum: 9999
+                example: 2000
+              lowCut:
+                type: integer
+                description: 電流ローカット値 (%)
+                minimum: 0.0
+                maximum: 9.9
+                example: 0.1
+              primaryA:
+                type: integer
+                description: 一次電流 (A)
+                minimum: 0
+                example: 2
+              virtualVoltage:
+                type: number
+                description: "仮想電圧 (V) [0.01-999.99]"
+                minimum: 0.01
+                maximum: 999.99
+                example: 220.00
+              virtualPowerFactor:
+                type: number
+                description: "仮想力率 [0.000-1.000]"
+                minimum: 0.000
+                maximum: 1.000
+                example: 1.000
+              accumTarget:
+                type: integer
+                description: "蓄積対象 [0:蓄積なし|1:積算電力量|2:電流(瞬時値)|3:電流(平均値)]"
+                enum:
+                  - 0 # 蓄積なし
+                  - 1 # 積算電力量
+                  - 2 # 電流(瞬時値)
+                  - 3 # 電流(平均値)
+                example: 1
+    demandSetting:
+      type: object
+      description: デマンド設定（パルスのみ）
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          required:
+            - period
+            - mongPointName
+            - mongInterval
+            - delay
+            - targetKw
+            - interruptionKw
+            - alarmLimit
+            - notificationInterval
+            - notificationFlags
+          properties:
+            period:
+              type: integer
+              description: 時限
+              minimum: 0
+              example: 30
+            mongPointName:
+              type: string
+              description: 監視ポイント名
+              minLength: 1
+              maxLength: 50
+              example: 1階分電盤デマンド
+            mongInterval:
+              type: integer
+              description: "監視周期(秒) [0:無効|60:60秒|300:300秒]"
+              enum:
+                - 0
+                - 60
+                - 300
+              example: 300
+            delay:
+              type: integer
+              description: デマンドディレイ
+              minimum: 0
+              maximum: 1800
+              example: 120
+            targetKw:
+              type: integer
+              description: 目標電力
+              minimum: 1
+              maximum: 32000
+              example: 600
+            interruptionKw:
+              type: integer
+              description: 遮断電力
+              minimum: 1
+              maximum: 32000
+              example: 30
+            alarmLimit:
+              type: integer
+              description: 時限内警報通知上限(0:無制限|1～255:回数)
+              minimum: 0
+              maximum: 255
+              example: 1
+            notificationInterval:
+              type: integer
+              description: "デマンド監視状態通知間隔 [0:無効|1:1分|5:5分|15:15分|30:30分|99:警報通知時のみ]"
+              enum:
+                - 0 # 無効
+                - 1 # 1分
+                - 5 # 5分
+                - 15 # 15分
+                - 30 # 30分
+                - 99 # 警報通知時のみ
+              example: 5
+            notificationFlags:
+              type: object
+              description: 警報通知
+              required:
+                - isCaution
+                - isNotification
+                - isAlarm
+              properties:
+                isCaution:
+                  type: boolean
+                  description: 警報通知有効フラグ 注意警報
+                  example: true
+                isNotification:
+                  type: boolean
+                  description: 警報通知有効フラグ 遮断警報
+                  example: true
+                isAlarm:
+                  type: boolean
+                  description: 時限終了(警報時)
+                  example: true
+    thresholdSetting:
+      type: object
+      description: しきい値監視設定
+      properties:
+        pulse:
+          type: array
+          description: パルス
+          items:
+            type: object
+            required:
+              - upper
+              - lower
+            properties:
+              upper:
+                type: object
+                description: 上限
+                required:
+                  - mongPointName
+                  - mongInterval
+                  - compAlarmVal
+                  - alarmDelay
+                  - returnVal
+                  - alarmResetDelay
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(上限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 1000.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 950.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+              lower:
+                type: object
+                description: 下限
+                required:
+                  - mongPointName
+                  - mongInterval
+                  - compAlarmVal
+                  - alarmDelay
+                  - returnVal
+                  - alarmResetDelay
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(下限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 0.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 10.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 300
+        ct:
+          type: array
+          description: CT
+          items:
+            type: object
+            required:
+              - upper
+              - lower
+            properties:
+              upper:
+                type: object
+                description: 上限
+                required:
+                  - mongPointName
+                  - mongInterval
+                  - compAlarmVal
+                  - alarmDelay
+                  - returnVal
+                  - alarmResetDelay
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(上限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 1000.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 950.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+              lower:
+                type: object
+                description: 下限
+                required:
+                  - mongPointName
+                  - mongInterval
+                  - compAlarmVal
+                  - alarmDelay
+                  - returnVal
+                  - alarmResetDelay
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(上限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 0.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 10.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+    serverSetting:
+      type: object
+      description: サーバー設定
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          required:
+            - standardTime
+            - delay
+            - randomDelay
+            - alarmTrigger
+            - alarmLimit
+            - sendInterval
+            - alarmNoticeFlag
+            - demandMongNoticeFlag
+            - regularAlarmNoticeFlag
+          properties:
+            standardTime:
+              type: string
+              description: 通信基準時刻
+              minLength: 5
+              maxLength: 5
+              example: 10:00
+            delay:
+              type: integer
+              description: ディレイ時間
+              minimum: 0
+              example: 59
+            randomDelay:
+              type: boolean
+              description: ディレイランダム化
+              example: false
+            alarmTrigger:
+              type: integer
+              description: 警報通知トリガ
+              minimum: 0
+              example: 0
+            alarmLimit:
+              type: integer
+              description: 一日の警報上限
+              minimum: 0
+              example: 0
+            sendInterval:
+              type: integer
+              description: 送信周期
+              minimum: 0
+              example: 0
+            alarmNoticeFlag:
+              type: boolean
+              description: 警報通知
+              example: true
+            demandMongNoticeFlag:
+              type: boolean
+              description: デマンド監視状態通知
+              example: true
+            regularAlarmNoticeFlag:
+              type: boolean
+              description: 警報時定期送信
+              example: true
+        ct:
+          type: object
+          description: CT
+          required:
+            - standardTime
+            - delay
+            - randomDelay
+            - alarmTrigger
+            - alarmLimit
+            - sendInterval
+            - alarmNoticeFlag
+            - regularAlarmNoticeFlag
+          properties:
+            standardTime:
+              type: string
+              description: 通信基準時刻
+              minLength: 5
+              maxLength: 5
+              example: 10:00
+            delay:
+              type: integer
+              description: ディレイ時間
+              minimum: 0
+              example: 59
+            randomDelay:
+              type: boolean
+              description: ディレイランダム化
+              example: false
+            alarmTrigger:
+              type: integer
+              description: 警報通知トリガ
+              minimum: 0
+              example: 0
+            alarmLimit:
+              type: integer
+              description: 一日の警報上限
+              minimum: 0
+              example: 0
+            sendInterval:
+              type: integer
+              description: 送信周期
+              minimum: 0
+              example: 0
+            alarmNoticeFlag:
+              type: boolean
+              description: 警報通知
+              example: true
+            regularAlarmNoticeFlag:
+              type: boolean
+              description: 警報時定期送信
+              example: true
+
+deviceWlmPutRequest:
+  type: object
+  description: WLM設定更新リクエスト
+  properties:
+    accumulationSetting:
+      type: object
+      description: 蓄積設定
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          properties:
+            accumPointName:
+              type: string
+              description: 蓄積ポイント名
+              minLength: 1
+              maxLength: 50
+              example: デマンド電力
+    measurementSetting:
+      type: object
+      description: 計測設定
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          properties:
+            coefficientVal:
+              type: number
+              description: パルス係数
+              minimum: 0.0001
+              maximum: 9999.9999
+              example: 0.0120
+        ct:
+          type: array
+          description: CT
+          items:
+            type: object
+            properties:
+              accumPointName:
+                type: string
+                description: 蓄積ポイント名
+                minLength: 1
+                maxLength: 50
+                example: 三相トランスNo.1 電力量
+              phaseDivision:
+                type: integer
+                description: "相線区分 [0:単相2線|1:単相3線|2:三相3線2CT|6:三相3線1CT]"
+                enum:
+                  - 0 # 単相2線
+                  - 1 # 単相3線
+                  - 2 # 三相3線2CT
+                  - 6 # 三相3線1CT
+                example: 2
+              inputRatingPower:
+                type: integer
+                description: "電流入力定格 [5:5A|200:50/100/200/400/600A]"
+                enum:
+                  - 5 # 5A
+                  - 200 # 50/100/200/400/600A
+                example: 200
+              primaryRatingPower:
+                type: integer
+                description: 電流一次定格 (A)
+                minimum: 5
+                maximum: 9999
+                example: 2000
+              lowCut:
+                type: integer
+                description: 電流ローカット値 (%)
+                minimum: 0.0
+                maximum: 9.9
+                example: 0.1
+              virtualVoltage:
+                type: number
+                description: "仮想電圧 (V) [0.01-999.99]"
+                minimum: 0.01
+                maximum: 999.99
+                example: 220.00
+              virtualPowerFactor:
+                type: number
+                description: "仮想力率 [0.000-1.000]"
+                minimum: 0.000
+                maximum: 1.000
+                example: 1.000
+              accumTarget:
+                type: integer
+                description: "蓄積対象 [0:蓄積なし|1:積算電力量|2:電流(瞬時値)|3:電流(平均値)]"
+                enum:
+                  - 0 # 蓄積なし
+                  - 1 # 積算電力量
+                  - 2 # 電流(瞬時値)
+                  - 3 # 電流(平均値)
+                example: 1
+    demandSetting:
+      type: object
+      description: デマンド設定
+      properties:
+        pulse:
+          type: object
+          description: パルス
+          properties:
+            mongPointName:
+              type: string
+              description: デマンド監視ポイント名
+              minLength: 1
+              maxLength: 50
+              example: 調布工場デマンド
+            mongInterval:
+              type: integer
+              description: "監視周期(秒) [0:無効|60:60秒|300:300秒]"
+              enum:
+                - 0
+                - 60
+                - 300
+              example: 300
+            delay:
+              type: integer
+              description: デマンドディレイ(秒)
+              minimum: 0
+              maximum: 1800
+              example: 120
+            targetKw:
+              type: integer
+              description: 目標電力
+              minimum: 1
+              maximum: 32000
+              example: 600
+            interruptionKw:
+              type: integer
+              description: 遮断電力
+              minimum: 1
+              maximum: 32000
+              example: 30
+    thresholdSetting:
+      type: object
+      description: しきい値監視設定
+      properties:
+        pulse:
+          type: array
+          description: パルス
+          items:
+            type: object
+            properties:
+              upper:
+                type: object
+                description: 上限
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(上限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値(復帰値以上)
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 1000.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値(比較警報値以下)
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 950.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+              lower:
+                type: object
+                description: 下限
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(下限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値(復帰値以下)
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 0.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値(比較警報値以上)
+                    minimum: 0.0000
+                    maximum: 99999.9999
+                    example: 10.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+        ct:
+          type: array
+          description: CT
+          items:
+            type: object
+            properties:
+              upper:
+                type: object
+                description: 上限
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(上限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値(復帰値以上)
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 1000.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値(比較警報値以下)
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 950.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+              lower:
+                type: object
+                description: 下限
+                properties:
+                  mongPointName:
+                    type: string
+                    description: 監視ポイント名
+                    minLength: 1
+                    maxLength: 50
+                    example: パルスカウント(上限)
+                  mongInterval:
+                    type: integer
+                    description: "監視周期(分) [-1:無効|0:計測周期に同期|1|5|10|30|60]"
+                    enum:
+                      - -1
+                      - 0
+                      - 1
+                      - 5
+                      - 10
+                      - 30
+                      - 60
+                    example: 1
+                  compAlarmVal:
+                    type: number
+                    description: 比較警報値(復帰値以下)
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 0.0000
+                  alarmDelay:
+                    type: integer
+                    description: 警報発生ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+                  returnVal:
+                    type: number
+                    description: 復帰値(比較警報値以上)
+                    minimum: 0.0
+                    maximum: 99999.9
+                    example: 10.0000
+                  alarmResetDelay:
+                    type: integer
+                    description: 警報復帰ディレイ (秒)
+                    minimum: 0
+                    maximum: 86400
+                    example: 60
+
+getGwDemandSetting:
+  type: object
+  description: GWデマンド設定
+  required:
+    - base
+    - point
+    - demand
+    - pulsePointList
+    - outUnitList
+  properties:
+    base:
+      type: object
+      description: 基本設定
+      required:
+        - name
+        - samplingTime
+        - demandDelay
+        - enabled
+        - alertOutput
+      properties:
+        name:
+          type: string
+          description: 監視名称
+          minLength: 1
+          maxLength: 50
+          example: デマンド監視
+        samplingTime:
+          type: integer
+          description: サンプリング時間(秒)
+          enum:
+            - 10
+            - 30
+            - 60
+            - 300
+          example: 60
+        demandDelay:
+          type: integer
+          description: デマンドディレイ(分)
+          minimum: 0
+          maximum: 30
+          example: 3
+        enabled:
+          type: boolean
+          description: デマンド監視状態
+          example: true
+        alertOutput:
+          type: boolean
+          description: 警報出力
+          example: false
+    point:
+      type: object
+      description: 計測/制御対象
+      required:
+        - alertOutputIds
+        - pulseInputId
+      properties:
+        alertOutputIds:
+          type: array
+          description: 制御機器設定ID
+          items:
+            type: string
+            minLength: 26
+            maxLength: 26
+            example: 01HKPY1MCDRKVRRRWPQ417M1T7
+        pulseInputId:
+          type: string
+          description: 計測ポイントID
+          minLength: 26
+          maxLength: 26
+          example: 01HKPY1MCDRKVRRRWPQ417M1T8
+    demand:
+      type: object
+      description: デマンド設定
+      required:
+        - chOff
+        - chOn
+        - timeZone
+      properties:
+        chOff:
+          type: object
+          description:
+          required:
+            - interval
+            - order
+          properties:
+            interval:
+              type: integer
+              description: 遮断間隔
+              minimum: 0
+              maximum: 300
+              example: 60
+            order:
+              type: string
+              description: 遮断順序
+              enum:
+                - from1
+                - next
+              example: from1
+        chOn:
+          type: object
+          description:
+          required:
+            - interval
+            - order
+          properties:
+            interval:
+              type: integer
+              description: 復帰間隔
+              minimum: 0
+              maximum: 300
+              example: 60
+            order:
+              type: string
+              description: 復帰順序
+              enum:
+                - fifo
+                - lifo
+              example: lifo
+        timeZone:
+          type: array
+          description:
+          minItems: 3
+          maxItems: 3
+          items:
+            type: object
+            required:
+              - alertPower
+              - chOffPower
+              - chOnPower
+              - enabled
+              - startTime
+              - stopTime
+              - targetPower
+            properties:
+              alertPower:
+                type: integer
+                description: 警報電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+              chOffPower:
+                type: integer
+                description: 遮断電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+              chOnPower:
+                type: integer
+                description: 復帰電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+              enabled:
+                type: boolean
+                description: 警報設定
+                example: true
+              startTime:
+                type: integer
+                description: 監視開始時間
+                minimum: 0
+                maximum: 23
+                example: 1
+              stopTime:
+                type: integer
+                description: 監視終了時間
+                minimum: 0
+                maximum: 23
+                example: 6
+              targetPower:
+                type: integer
+                description: 目標電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+    pulsePointList:
+      type: array
+      description: 計測ポイント設定リスト
+      items:
+        type: object
+        required:
+          - id
+          - pointName
+          - dispName
+          - coef
+          - type
+        properties:
+          id:
+            type: string
+            description: 蓄積ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G516V3EVFG5JT9YB5WD20TKN
+          pointName:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: デマンド電力
+          dispName:
+            type: string
+            description: >
+              表示名
+                * 内蔵ポイントの場合: デバイス名
+                * それ以外: ユニット名
+            minLength: 1
+            maxLength: 50
+            example: 23AC001234
+          coef:
+            type: number
+            description: ポイントに設定された係数
+            format: float
+            example: 0.024
+          type:
+            type: integer
+            description: >
+              ユニットのタイプ
+                * 0 - RS485
+                * 1 - 920mhz無線ノード
+            enum:
+              - 0
+              - 1
+    outUnitList:
+      type: array
+      description: 制御機器設定リスト
+      items:
+        type: object
+        required:
+          - id
+          - dispName
+        properties:
+          id:
+            type: string
+            description: ユニットID
+            minLength: 26
+            maxLength: 26
+            example: 01G516V3EVFG5JT9YB5WD20TKN
+          dispName:
+            type: string
+            description: >
+              表示名
+                * 内蔵ポイントの場合: デバイス名
+                * それ以外: ユニット名
+            minLength: 1
+            maxLength: 50
+            example: 23AC001234
+    isInUpdate:
+      type: boolean
+      description: 更新中フラグ
+      example: false
+
+updateGwDemandSetting:
+  type: object
+  description: GWデマンド設定
+  required:
+    - base
+    - point
+    - demand
+  properties:
+    base:
+      type: object
+      description: 基本設定
+      required:
+        - name
+        - samplingTime
+        - demandDelay
+        - enabled
+        - alertOutput
+      properties:
+        name:
+          type: string
+          description: 監視名称
+          minLength: 1
+          maxLength: 50
+          example: デマンド監視
+        samplingTime:
+          type: integer
+          description: サンプリング時間(秒)
+          enum:
+            - 10
+            - 30
+            - 60
+            - 300
+          example: 60
+        demandDelay:
+          type: integer
+          description: デマンドディレイ(分)
+          minimum: 0
+          maximum: 30
+          example: 3
+        enabled:
+          type: boolean
+          description: デマンド監視状態
+          example: true
+        alertOutput:
+          type: boolean
+          description: 警報出力
+          example: false
+    point:
+      type: object
+      description: 計測/制御対象
+      required:
+        - alertOutputIds
+        - pulseInputId
+      properties:
+        alertOutputIds:
+          type: array
+          description: 制御機器設定ID
+          items:
+            type: string
+            minLength: 26
+            maxLength: 26
+            example: 01HKPY1MCDRKVRRRWPQ417M1T7
+        pulseInputId:
+          type: string
+          description: 計測ポイントID
+          minLength: 26
+          maxLength: 26
+          example: 01HKPY1MCDRKVRRRWPQ417M1T8
+    demand:
+      type: object
+      description: デマンド設定
+      required:
+        - chOff
+        - chOn
+        - timeZone
+      properties:
+        chOff:
+          type: object
+          description:
+          required:
+            - interval
+            - order
+          properties:
+            interval:
+              type: integer
+              description: 遮断間隔
+              minimum: 0
+              maximum: 300
+              example: 60
+            order:
+              type: string
+              description: 遮断順序
+              enum:
+                - from1
+                - next
+              example: from1
+        chOn:
+          type: object
+          description:
+          required:
+            - interval
+            - order
+          properties:
+            interval:
+              type: integer
+              description: 復帰間隔
+              minimum: 0
+              maximum: 300
+              example: 60
+            order:
+              type: string
+              description: 復帰順序
+              enum:
+                - fifo
+                - lifo
+              example: lifo
+        timeZone:
+          type: array
+          description:
+          minItems: 3
+          maxItems: 3
+          items:
+            type: object
+            required:
+              - alertPower
+              - chOffPower
+              - chOnPower
+              - enabled
+              - startTime
+              - stopTime
+              - targetPower
+            properties:
+              alertPower:
+                type: integer
+                description: 警報電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+              chOffPower:
+                type: integer
+                description: 遮断電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+              chOnPower:
+                type: integer
+                description: 復帰電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500
+              enabled:
+                type: boolean
+                description: 警報設定
+                example: true
+              startTime:
+                type: integer
+                description: 監視開始時間
+                minimum: 0
+                maximum: 23
+                example: 1
+              stopTime:
+                type: integer
+                description: 監視終了時間
+                minimum: 0
+                maximum: 23
+                example: 6
+              targetPower:
+                type: integer
+                description: 目標電力(kW)
+                minimum: 1
+                maximum: 32000
+                example: 500

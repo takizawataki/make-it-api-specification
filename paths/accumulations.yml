@@ -1,0 +1,108 @@
+"accumulations/list":
+  get:
+    summary: 蓄積ポイント一覧取得
+    description: 蓄積ポイント一覧を取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - 蓄積ポイント
+    parameters:
+      - in: query
+        name: unit
+        required: true
+        description: ユニットID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G7985449JXG2AJDDP79YQ7FR
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/accumulations.yml#/accuPointList"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"accumulations/master":
+  get:
+    summary: 蓄積ポイントマスター取得
+    description: 蓄積ポイントマスターを取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - 蓄積ポイント
+    parameters:
+      - in: query
+        name: unitModel
+        required: true
+        description: ユニット型式ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51BWY97MVVF5KPZ02VH2T24
+      - in: query
+        name: deviceModel
+        required: true
+        description: デバイス型式
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: WGWB-B1-XXXXX-X00-XX1
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/accumulations.yml#/accuPointMaster"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

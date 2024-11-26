@@ -1,0 +1,523 @@
+"demands/search":
+  get:
+    summary: デマンド検索
+    description: 条件に合致するデマンド情報を取得する。
+    tags:
+      - デマンド
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: base
+        required: false
+        description: 拠点名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 東京
+      - in: query
+        name: point
+        required: false
+        description: 監視ポイント名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: パルスカウント
+      - in: query
+        name: state
+        required: false
+        description: >
+          警報状態
+            *  1 - 情報なし
+            *  2 - 正常
+            *  3 - 正常 | 情報なし
+            *  4 - 注意
+            *  5 - 注意 | 情報なし
+            *  6 - 注意 | 正常
+            *  7 - 注意 | 正常 | 情報なし
+            *  8 - 遮断
+            *  9 - 遮断 | 情報なし
+            * 10 - 遮断 | 正常
+            * 11 - 遮断 | 正常 | 情報なし
+            * 12 - 遮断 | 注意
+            * 13 - 遮断 | 注意 | 情報なし
+            * 14 - 遮断 | 注意 | 正常
+            * 15 - 遮断 | 注意 | 正常 | 情報なし
+            * 16 - 超過
+            * 17 - 超過 | 情報なし
+            * 18 - 超過 | 正常
+            * 19 - 超過 | 正常 | 情報なし
+            * 20 - 超過 | 注意
+            * 21 - 超過 | 注意 | 情報なし
+            * 22 - 超過 | 注意 | 正常
+            * 23 - 超過 | 注意 | 正常 | 情報なし
+            * 24 - 超過 | 遮断
+            * 25 - 超過 | 遮断 | 情報なし
+            * 26 - 超過 | 遮断 | 正常
+            * 27 - 超過 | 遮断 | 正常 | 情報なし
+            * 28 - 超過 | 遮断 | 注意
+            * 29 - 超過 | 遮断 | 注意 | 情報なし
+            * 30 - 超過 | 遮断 | 注意 | 正常
+            * 31 - 超過 | 遮断 | 注意 | 正常 | 情報なし
+        schema:
+          type: integer
+          enum:
+            - 1 # 00001 情報なし
+            - 2 # 00010 正常
+            - 3 # 00011 正常|情報なし
+            - 4 # 00100 注意
+            - 5 # 00101 注意|情報なし
+            - 6 # 00110 注意|正常
+            - 7 # 00111 注意|正常|情報なし
+            - 8 # 01000 遮断
+            - 9 # 01001 遮断|情報なし
+            - 10 # 01010 遮断|正常
+            - 11 # 01011 遮断|正常|情報なし
+            - 12 # 01100 遮断|注意
+            - 13 # 01101 遮断|注意|情報なし
+            - 14 # 01110 遮断|注意|正常
+            - 15 # 01111 遮断|注意|正常|情報なし
+            - 16 # 10000 超過
+            - 17 # 10001 超過|情報なし
+            - 18 # 10010 超過|正常
+            - 19 # 10011 超過|正常|情報なし
+            - 20 # 10100 超過|注意
+            - 21 # 10101 超過|注意|情報なし
+            - 22 # 10110 超過|注意|正常
+            - 23 # 10111 超過|注意|正常|情報なし
+            - 24 # 11000 超過|遮断
+            - 25 # 11001 超過|遮断|情報なし
+            - 26 # 11010 超過|遮断|正常
+            - 27 # 11011 超過|遮断|正常|情報なし
+            - 28 # 11100 超過|遮断|注意
+            - 29 # 11101 超過|遮断|注意|情報なし
+            - 30 # 11110 超過|遮断|注意|正常
+            - 31 # 11111 超過|遮断|注意|正常|情報なし
+          minimum: 1
+          maximum: 31
+          default: 31
+          example: 24
+      - in: query
+        name: page
+        required: false
+        description: ページ番号
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 1
+      - in: query
+        name: size
+        required: false
+        description: ページサイズ
+        schema:
+          type: integer
+          enum:
+            - 20
+            - 50
+            - 100
+          default: 20
+          example: 20
+      - in: query
+        name: sort
+        required: false
+        description: >
+          ソート項目
+            * baseName      - 拠点グループ名
+            * mongPointName - 監視ポイント名
+            * state         - 警報状態
+            * tightness     - 逼迫度
+            * 無指定         - 拠点グループ表示設定順
+        schema:
+          type: string
+          enum:
+            - baseName
+            - mongPointName
+            - state
+            - tightness
+          example: mongPointName
+      - in: query
+        name: order
+        required: false
+        description: >
+          ソート項目の並び順
+            * true  - 昇順
+            * false - 降順
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/demands.yml#/demandSearchResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"demands/log/search":
+  get:
+    summary: デマンドログ検索
+    description: 条件に合致するデマンドログ情報を取得する。
+    tags:
+      - デマンド
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: base
+        required: false
+        description: 拠点グループ名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 東京
+      - in: query
+        name: device
+        required: false
+        description: デバイス名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: キュービクル
+      - in: query
+        name: point
+        required: false
+        description: 監視ポイント名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: パルス
+      - in: query
+        name: page
+        required: false
+        description: ページ番号
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 1
+      - in: query
+        name: size
+        required: false
+        description: ページサイズ
+        schema:
+          type: integer
+          enum:
+            - 20
+            - 50
+            - 100
+          default: 20
+          example: 20
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/demands.yml#/demandLogSearchResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"demands/log/export":
+  get:
+    summary: デマンドログ出力
+    description: 条件に合致するデマンドログ情報をCSV形式で出力する。
+    tags:
+      - デマンド
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: base
+        required: false
+        description: 拠点グループ名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 東京
+      - in: query
+        name: device
+        required: false
+        description: デバイス名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: キュービクル
+      - in: query
+        name: point
+        required: false
+        description: 監視ポイント名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: パルス
+      - in: query
+        name: type
+        required: true
+        description: >
+          データ種別
+            * 0 - 日報(30分)
+            * 1 - 月報
+            * 2 - 年報
+        schema:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+          default: 0
+          example: 1
+      - in: query
+        name: start
+        required: true
+        description: >
+          開始日時
+            * 日報 - 8桁 (yyyyMMdd)
+            * 月報 - 6桁 (yyyyMM)
+            * 年報 - 4桁 (yyyy)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20230112
+      - in: query
+        name: end
+        required: true
+        description: >
+          終了日時
+            * 日報 - 8桁 (yyyyMMdd)
+            * 月報 - 6桁 (yyyyMM)
+            * 年報 - 4桁 (yyyy)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20230112
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/octet-stream":
+            schema:
+              type: string
+              description: CSVデータはShift-JISで出力
+              example: '"日時","デマンド監視ポイント名1","デマンド監視ポイント名2","デマンド監視ポイント名3","デマンド監視ポイント名4","デマンド監視ポイント名5","デマンド監視ポイント名6"\n"2023/01/12  0:00","226","206","296","227","246","226"\n"2023/01/12  0:30","257","286","544","343","781","526"\n"2023/01/12  1:00","246","231","367","226","657","268"\n"2023/01/12  1:30","260","488","497","28.5","500","238"\n"2023/01/12  2:00","286","250","513","347","766","224"\n"2023/01/12  2:30","236","205","377","324","630","210"'
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"demands/graph/wlm/{mongPointId}":
+  get:
+    summary: WLMデマンドグラフデータ取得
+    description: WLM用のデマンドグラフデータを取得する。
+    tags:
+      - デマンド
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: mongPointId
+        required: true
+        description: 監視ポイントID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G6EVEXVQ77AFQD7ZZH44BCJ1
+      - in: query
+        name: current
+        required: false
+        description: >
+          現時限かどうか
+            * true  - 現時限
+            * false - 前時限
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/demands.yml#/demandGraphWlm"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"demands/graph/unit/{mongPointId}":
+  get:
+    summary: IoTGWデマンドグラフデータ取得
+    description: IoTGW用のデマンドグラフデータを取得する。
+    tags:
+      - デマンド
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: mongPointId
+        required: true
+        description: 監視ポイントID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G6EVEXVQ77AFQD7ZZH44BCJ1
+      - in: query
+        name: current
+        required: false
+        description: >
+          現時限かどうか
+            * true  - 現時限
+            * false - 前時限
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/demands.yml#/demandGraphUnit"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

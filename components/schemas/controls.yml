@@ -1,0 +1,68 @@
+controlSearchResult:
+  type: object
+  description: DOポイント一覧
+  required:
+    - lastRetrievalAt
+    - results
+  properties:
+    lastRetrievalAt:
+      type: string
+      format: date-time
+      nullable: true
+      description: 最終取得日時 (JST)
+      example: "2023-03-14T10:59:00Z"
+    results:
+      type: array
+      items:
+        type: object
+        description: ポイント情報
+        required:
+          - pointId
+          - pointName
+          - status
+        properties:
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          pointName:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 1F_2F照明電源
+          status:
+            type: integer
+            nullable: true
+            description: >
+              状態
+                * 0   - OFF
+                * 1   - ON
+            enum:
+              - 0
+              - 1
+            example: 1
+
+controlDoList:
+  type: array
+  description: DO制御対象一覧
+  items:
+    type: object
+    required:
+      - targetId
+      - targetName
+    properties:
+      targetId:
+        type: string
+        description: ターゲットID
+        minLength: 26
+        maxLength: 26
+        example: 01HGZ26HTGS8F5MH65AZD8SVJX
+      targetName:
+        type: string
+        description: ターゲット名
+        minLength: 1
+        maxLength: 32
+        example: 警報灯出力

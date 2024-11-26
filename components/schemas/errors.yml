@@ -1,0 +1,7 @@
+error:
+  description: "エラー"
+  type: object
+  properties:
+    message:
+      description: "エラーメッセージ"
+      type: string

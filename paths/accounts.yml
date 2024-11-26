@@ -1,0 +1,286 @@
+"accounts":
+  post:
+    summary: アカウント登録
+    description: アカウントを登録する。
+    security:
+      - bearerAuth: []
+    tags:
+      - アカウント
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/accounts.yml#/accountRequest"
+    responses:
+      "201":
+        description: 正常終了 (Created)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/accounts.yml#/accountResponse"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "409":
+        description: リソース重複エラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"accounts/bulk":
+  put:
+    summary: アカウント一括更新
+    description: アカウントを一括で更新する。
+    tags:
+      - アカウント
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/accounts.yml#/accountPutBulkRequest"
+    responses:
+      "204":
+        description: 正常終了 (No Content)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"accounts/{accountId}":
+  delete:
+    summary: アカウント削除
+    description: アカウントを1件削除する。
+    tags:
+      - アカウント
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: accountId
+        required: true
+        description: アカウントID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G516K5MX6N0V393P6NFQH8MX
+    responses:
+      "204":
+        description: 正常終了
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"accounts/search":
+  get:
+    summary: アカウント検索
+    description: 条件を指定してアカウント一覧を取得する。
+    tags:
+      - アカウント
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: company
+        required: false
+        description: 企業名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 渡辺電機
+      - in: query
+        name: base
+        required: false
+        description: 拠点名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 東京
+      - in: query
+        name: mail
+        required: false
+        description: メールアドレス
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: watanabe
+      - in: query
+        name: account
+        required: false
+        description: アカウント名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 渡辺
+      - in: query
+        name: page
+        required: false
+        description: ページ番号
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 1
+      - in: query
+        name: size
+        required: false
+        description: ページサイズ
+        schema:
+          type: integer
+          enum:
+            - 20
+            - 50
+            - 100
+          default: 20
+          example: 50
+      - in: query
+        name: sort
+        required: false
+        description: >
+          ソート項目
+            * companyname   - 企業名
+            * basename      - 拠点グループ名
+            * mailaddress   - メールアドレス
+            * accountname   - アカウント名
+            * mode          - 権限
+            * 無指定         - 企業名
+        schema:
+          type: string
+          enum:
+            - companyname
+            - basename
+            - mailaddress
+            - accountname
+            - mode
+          example: mailaddress
+      - in: query
+        name: order
+        required: false
+        description: >
+          ソート項目の並び順
+            * true  - 昇順
+            * false - 降順
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/accounts.yml#/accountSearchResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

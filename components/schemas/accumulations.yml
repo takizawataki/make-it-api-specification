@@ -1,0 +1,105 @@
+accuPointList:
+  type: array
+  description: 蓄積ポイント一覧
+  items:
+    type: object
+    description: 蓄積ポイント情報
+    required:
+      - pointId
+      - pointName
+      - dataTypeKey
+    properties:
+      pointId:
+        type: string
+        description: 蓄積ポイントID
+        minLength: 26
+        maxLength: 26
+        example: 01G51C9R4JS5A250RR0RHCEAPC
+      pointName:
+        type: string
+        description: 蓄積ポイント名
+        minLength: 1
+        maxLength: 50
+        example: 1F倉庫
+      dataTypeKey:
+        type: string
+        description: データ種別キー
+        minLength: 1
+        maxLength: 32
+        example: diValue
+
+accuPointMaster:
+  type: object
+  description: 蓄積ポイントマスター
+  required:
+    - channels
+    - dataTypes
+    - calcMethods
+  properties:
+    channels:
+      type: array
+      items:
+        type: object
+        properties:
+          channelId:
+            type: string
+            description: チャンネルID
+            minLength: 26
+            maxLength: 26
+            example: 01G51C9R4JS5A250RR0RHCEAPC
+          channelName:
+            type: string
+            description: チャンネル名
+            minLength: 1
+            maxLength: 32
+            example: CH1
+    dataTypes:
+      type: array
+      items:
+        type: object
+        properties:
+          pointModelId:
+            type: string
+            description: ポイント型式ID
+            minLength: 26
+            maxLength: 26
+            example: 01G51C9R4JS5A250RR0RHCEASQ
+          dataType:
+            type: string
+            description: データ種別
+            minLength: 1
+            maxLength: 32
+            example: アナログ計測値
+          calcFlag:
+            type: integer
+            description: "係数スケールフラグ [0:両方なし|1:係数|2:スケール|3:力率]"
+            enum:
+              - 0 # 両方なし
+              - 1 # 係数
+              - 2 # スケール
+              - 3 # 力率
+            example: 2
+            nullable: true
+          defaultSymbolId:
+            type: string
+            description: デフォルト記号ID
+            minLength: 26
+            maxLength: 26
+            example: 01G51C9R4JS5A250RR0RHCEAAZ
+          calcMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                calcMethodId:
+                  type: string
+                  description: 演算方法ID
+                  minLength: 26
+                  maxLength: 26
+                  example: 01G51C9R4JS5A250RR0RHCEAPA
+                calcMethodName:
+                  type: string
+                  description: 演算方法名
+                  minLength: 1
+                  maxLength: 32
+                  example: 最大値

@@ -1,0 +1,164 @@
+"points/list":
+  get:
+    summary: ポイント一覧取得
+    description: ポイント一覧を取得する。
+    tags:
+      - ポイント
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: type
+        required: true
+        description: >
+          ポイント種別
+            * 1 - 蓄積
+            * 2 - 計算
+            * 3 - 計算 | 蓄積
+            * 4 - デマンド
+            * 5 - デマンド | 蓄積
+            * 6 - デマンド | 計算
+            * 7 - デマンド | 計算 | 蓄積
+        schema:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+          example: 3
+      - in: query
+        name: base
+        required: false
+        description: 拠点ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G516V3EVFG5JT9YB5WD20TKN
+      - in: query
+        name: device
+        required: false
+        description: デバイスID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G51CDT5AK3XMHBATB5HRXN6V
+      - in: query
+        name: symbol
+        required: false
+        description: 記号ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G6F4BXG8TFMPGDR5HKW28B0F
+      - in: query
+        name: point
+        required: false
+        description: ポイント名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: アナログ
+      - in: query
+        name: excid
+        required: false
+        description: 除外する計算ポイントID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01GWV8BM544WX4PAWXK91KHPZP
+      - in: query
+        name: excpa
+        required: false
+        description: 計算式に計算ポイントを持つポイントを除外するかどうか
+        schema:
+          type: boolean
+          default: false
+          example: true
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/points.yml#/pointList"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"points/id/export":
+  get:
+    summary: 蓄積ID出力
+    description: 蓄積ID情報をCSV形式で出力する。
+    tags:
+      - ポイント
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/octet-stream":
+            schema:
+              type: string
+              description: CSVデータはShift-JISで出力
+              example: '"ポイント種別","ID","ポイント名","機器名称"\n"蓄積","01G5JM8ACAGPDWQP3FPWD82H3S","アナログ入力計測値(平均値)_CH1","分電盤Ａ AI"\n"計算","01H09K55N9ZDK7KDR2EHBKMPXB","計算_グラフ確認用1",""\n"デマンド","01GXWESHDKDK6P7GJB67QT2ZHH","デマンド監視","鳥取工場GW"'
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

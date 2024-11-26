@@ -1,0 +1,441 @@
+"calculations":
+  post:
+    summary: 計算ポイント登録
+    description: 計算ポイントを登録する。
+    security:
+      - bearerAuth: []
+    tags:
+      - 計算ポイント
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/calculations.yml#/calculationsPostRequest"
+    responses:
+      "201":
+        description: 正常終了 (Created)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"calculations/{pointId}":
+  get:
+    summary: 計算ポイント取得
+    description: 計算ポイントを1件取得する。
+    tags:
+      - 計算ポイント
+    security:
+      - bearerAuth: []
+    parameters:
+      - $ref: "../components/schemas/calculations.yml#/pathPointId"
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/calculations.yml#/calculation"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+  put:
+    summary: 計算ポイント更新
+    description: 計算ポイントを更新する。
+    tags:
+      - 計算ポイント
+    security:
+      - bearerAuth: []
+    parameters:
+      - $ref: "../components/schemas/calculations.yml#/pathPointId"
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/calculations.yml#/calculationsPutRequest"
+    responses:
+      "204":
+        description: 正常終了 (No Content)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+  delete:
+    summary: 計算ポイント削除
+    description: 計算ポイントを1件削除する。
+    tags:
+      - 計算ポイント
+    security:
+      - bearerAuth: []
+    parameters:
+      - $ref: "../components/schemas/calculations.yml#/pathPointId"
+    responses:
+      "204":
+        description: 正常終了
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"calculations/search":
+  get:
+    summary: 計算ポイント検索
+    description: 条件を指定して計算ポイント一覧を取得する。
+    tags:
+      - 計算ポイント
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: base
+        required: false
+        description: 拠点グループ名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 調布工場
+      - in: query
+        name: point
+        required: false
+        description: 計算ポイント名
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 稼働率
+      - in: query
+        name: symbol
+        required: false
+        description: 記号ID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G6F4BXG8TFMPGDR5HKW28B0F
+      - in: query
+        name: page
+        required: false
+        description: ページ番号
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      - in: query
+        name: size
+        required: false
+        description: ページサイズ
+        schema:
+          type: integer
+          enum:
+            - 20
+            - 50
+            - 100
+          default: 20
+          example: 20
+      - in: query
+        name: sort
+        required: false
+        description: >
+          ソート項目
+            * baseName  - 拠点グループ名
+            * pointName - 計算ポイント名
+            * symbol    - 記号単位
+            * 無指定     - 拠点グループ表示設定順
+        schema:
+          type: string
+          enum:
+            - baseName
+            - pointName
+            - symbol
+          example: symbol
+      - in: query
+        name: order
+        required: false
+        description: >
+          ソート項目の並び順
+            * true  - 昇順
+            * false - 降順
+        schema:
+          type: boolean
+          default: true
+          example: false
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/calculations.yml#/calculationSearchResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"calculations/graph":
+  get:
+    summary: 使用量グラフ取得
+    description: 使用量グラフを取得する。
+    security:
+      - bearerAuth: []
+    tags:
+      - 計算ポイント
+    parameters:
+      - in: query
+        name: pointId
+        required: true
+        description: 計算ポイントID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G6F4BAFXY7B9VVQR7V216HJV
+      - in: query
+        name: current
+        required: false
+        description: >
+          当月のデータを取得するかどうか
+            * true  - 当月のデータを取得する
+            * false - 前月のデータを取得する
+        schema:
+          type: boolean
+          example: false
+          default: true
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/calculations.yml#/calculationGraphGetResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"calculations/{pointId}/graph/conf":
+  put:
+    summary: 使用量グラフ設定更新
+    description: 使用量グラフ設定を更新する。
+    security:
+      - bearerAuth: []
+    tags:
+      - 計算ポイント
+    parameters:
+      - $ref: "../components/schemas/calculations.yml#/pathPointId"
+    requestBody:
+      required: true
+      content:
+        "application/json":
+          schema:
+            $ref: "../components/schemas/calculations.yml#/calculationsGraphConfPutRequest"
+    responses:
+      "204":
+        description: 正常終了 (No Content)
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー （※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラー返却される場合がある）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"calculations/graph/points/list":
+  get:
+    summary: 使用量グラフ表示対象ポイント一覧取得
+    description: 使用量グラフ表示対象ポイント一覧を取得する。
+    tags:
+      - 計算ポイント
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/calculations.yml#/calculationGraphPointsListResult"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

@@ -1,0 +1,333 @@
+alarmSearchResult:
+  type: object
+  description: 警報検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 5
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 187
+    results:
+      type: array
+      items:
+        type: object
+        properties:
+          deviceName:
+            type: string
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: 調布_受電WLM
+          mongPointId:
+            type: string
+            description: 監視ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G6EVEXVQ77AFQD7ZZH44BCJ1
+          mongPointName:
+            type: string
+            description: 監視ポイント名
+            minLength: 1
+            maxLength: 50
+            example: パルスカウント(上限)
+          alarmType:
+            type: integer
+            description: "警報種別(0: デマンド、1: しきい値)"
+            minimum: 0
+            example: 1
+          occurredAt:
+            type: string
+            format: date-time
+            description: 発生日時
+            minLength: 20
+            maxLength: 20
+            example: 2022-06-27T09:23:00Z
+          releasedAt:
+            type: string
+            format: date-time
+            description: 解除日時
+            minLength: 20
+            maxLength: 20
+            example: 2022-06-27T09:35:00Z
+          status:
+            type: integer
+            description: "ステータス (0: 解除中、1: 発生中)"
+            minimum: 0
+            example: 0
+
+alarmHistory:
+  type: object
+  description: 警報履歴
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 5
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 187
+    results:
+      type: array
+      items:
+        type: object
+        properties:
+          alarmedAt:
+            type: string
+            format: date-time
+            description: 警報日時
+            minLength: 20
+            maxLength: 20
+            example: 2022-06-23T12:40:00Z
+          deviceName:
+            type: string
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: 渡辺電機本社キュービクル
+          mongPointName:
+            type: string
+            description: 監視ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 温度監視
+          measUnit:
+            type: string
+            description: 測定単位
+            minLength: 1
+            maxLength: 16
+            example: kW
+          measValue:
+            type: number
+            description: 測定値
+            minimum: 0.0
+            example: 20.40
+          currentPow:
+            type: number
+            description: 現在電力
+            minimum: 0.00
+            example: 18.21
+          predictPow:
+            type: number
+            description: 予測電力
+            minimum: 0.0
+            example: 19.45
+          adjustPow:
+            type: number
+            description: 調整電力
+            minimum: 0.0
+            example: 17.21
+          targetPow:
+            type: number
+            description: 目標電力
+            minimum: 0.0
+            example: 16.25
+          level:
+            type: string
+            description: "レベル (注意、遮断、超過、時限終了、上限、下限、ON/OFF)"
+            enum:
+              - 注意
+              - 遮断
+              - 超過
+              - 時限終了
+              - 上限
+              - 下限
+              - ON/OFF
+            x-enum-varnames:
+              - alert
+              - cutOff
+              - over
+              - timeOut
+              - maximum
+              - minimum
+              - onOff
+            example: 遮断
+          status:
+            type: integer
+            description: "状態 (0: 解除、1: 発生)"
+            enum:
+              - 0 # 解除
+              - 1 # 発生
+            example: 0
+
+alarmNotice:
+  type: object
+  required:
+    - demand
+    - threshold
+  description: 警報通知オブジェクト
+  properties:
+    device:
+      type: boolean
+      description: >
+        デバイス警報
+          * true:  警報発生
+          * false: 警報無し
+      example: true
+    demand:
+      type: boolean
+      description: >
+        デマンド警報
+          * true:  警報発生
+          * false: 警報無し
+      example: false
+    threshold:
+      type: boolean
+      description: >
+        しきい値警報
+          * true:  警報発生
+          * false: 警報無し
+      example: false
+
+alarmStatus:
+  description: 警報ステータス
+  items:
+    type: object
+    properties:
+      pointId:
+        type: string
+        description: ポイントID
+        minLength: 26
+        maxLength: 26
+        example: 01GA2GSRT0H5ZB8WWRY9VNJ8VZ
+      upward:
+        type: boolean
+        description: "上限"
+        example: true
+      downward:
+        type: boolean
+        description: "下限"
+        example: false
+      alert:
+        type: boolean
+        description: "警報"
+        example: false
+
+alarmMail:
+  description: 警報メール
+  type: object
+  required:
+    - sender
+    - destinations
+  properties:
+    sender:
+      type: string
+      description: 送信元アカウント
+      minLength: 3
+      maxLength: 128
+      example: no-reply@watanabe-electric.co.jp
+    destinations:
+      type: array
+      description: 送信先情報
+      items:
+        type: object
+        required:
+          - mail
+          - threshold
+          - demand
+          - device
+        properties:
+          mail:
+            type: string
+            description: メールアドレス
+            minLength: 3
+            maxLength: 128
+            example: taro.watanabe@kenbunroku.com
+          threshold:
+            type: boolean
+            description: しきい値警報
+            example: true
+          demand:
+            type: boolean
+            description: デマンド警報
+            example: false
+          device:
+            type: boolean
+            description: デバイス管理死活警報
+            example: true
+
+alarmMailPutRequest:
+  description: 警報メール更新リクエスト
+  type: object
+  required:
+    - baseId
+    - sender
+    - destinations
+  properties:
+    baseId:
+      type: string
+      description: 拠点ID
+      minLength: 26
+      maxLength: 26
+      nullable: true
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+    sender:
+      type: string
+      description: 送信元アカウント(ローカル部のみ指定)
+      minLength: 3
+      maxLength: 128
+      example: no-reply
+    destinations:
+      type: array
+      description: 送信先情報
+      items:
+        type: object
+        required:
+          - mail
+          - threshold
+          - demand
+          - device
+        properties:
+          mail:
+            type: string
+            description: メールアドレス
+            minLength: 3
+            maxLength: 128
+            example: taro.yamada@watanabe-electric.co.jp
+          threshold:
+            type: boolean
+            description: しきい値警報
+            example: true
+          demand:
+            type: boolean
+            description: デマンド警報
+            example: false
+          device:
+            type: boolean
+            description: デバイス管理死活警報
+            example: true

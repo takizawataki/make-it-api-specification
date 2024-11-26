@@ -1,0 +1,174 @@
+profile:
+  type: object
+  required:
+    - user
+    - company
+  description: プロフィールオブジェクト
+  properties:
+    user:
+      type: object
+      description: アカウント情報
+      required:
+        - userId
+        - name
+      properties:
+        userId:
+          type: string
+          description: ユーザーID
+          minLength: 26
+          maxLength: 26
+          example: 01G516K5MX6N0V393P6NFQH8MX
+        name:
+          type: string
+          description: アカウント名
+          minLength: 1
+          maxLength: 50
+          example: 渡辺 太郎
+    company:
+      type: object
+      description: 企業情報
+      required:
+        - startMonth
+      properties:
+        startMonth:
+          type: integer
+          description: 事業年度開始月
+          minimum: 1
+          maximum: 12
+          example: 4
+        themeColor:
+          type: object
+          description: テーマカラー
+          properties:
+            bootstrap:
+              type: object
+              description: Bootstrap 標準色 (コントロール系 UI)
+              properties:
+                primary:
+                  type: string
+                  example: "#ff00ff"
+                secondary:
+                  type: string
+                  example: "#ff00ff"
+                success:
+                  type: string
+                  example: "#ff00ff"
+                danger:
+                  type: string
+                  example: "#ff00ff"
+                warning:
+                  type: string
+                  example: "#ff00ff"
+                info:
+                  type: string
+                  example: "#ff00ff"
+                light:
+                  type: string
+                  example: "#ff00ff"
+                dark:
+                  type: string
+                  example: "#ff00ff"
+            kbrc:
+              type: object
+              description: 東京ユニバーサルデザインカラー (非コントロール系 UI)
+              properties:
+                kbrc-blue:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-red:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-yellow:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-pink:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-orange:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-violet:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-brown:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-light-gray:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-gray:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-cream:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-light-yellow-green:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-light-sky:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-beige:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-light-green:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-light-violet:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-light-pink:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-green:
+                  type: string
+                  example: "#ff00ff"
+                kbrc-white:
+                  type: string
+                  example: "#ff00ff"
+            vCalendar:
+              type: object
+              description: カレンダー
+              properties:
+                vc-accent-50:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-100:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-200:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-300:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-400:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-500:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-600:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-700:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-800:
+                  type: string
+                  example: "#ff00ff"
+                vc-accent-900:
+                  type: string
+                  example: "#ff00ff"
+            informationIcon:
+              type: string
+              description: 情報アイコン色
+              example: "#ff00ff"
+            navbarTogglerIcon:
+              type: string
+              description: ハンバーガーメニュー色
+              example: "#ff00ff"
+            sideBarText:
+              type: string
+              description: サイドバーテキスト色
+              example: "#ff00ff"

@@ -1,0 +1,18 @@
+symbolList:
+  type: array
+  description: 記号一覧
+  items:
+    type: object
+    properties:
+      symbolId:
+        type: string
+        description: 記号ID
+        example: 01G6F4BXG8TFMPGDR5HKW28B0F
+        minLength: 26
+        maxLength: 26
+      symbolName:
+        type: string
+        description: "記号名 (記号単位:単位名称)"
+        minLength: 3
+        maxLength: 67
+        example: "kW:有効電力"

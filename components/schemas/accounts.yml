@@ -1,0 +1,208 @@
+accountPutBulkRequest:
+  type: array
+  description: アカウント一括更新リクエスト
+  items:
+    type: object
+    required:
+      - accountId
+      - companyId
+      - baseId
+    properties:
+      accountId:
+        type: string
+        description: アカウントID
+        minLength: 26
+        maxLength: 26
+        example: 01G516K5MX6N0V393P6NFQH8MX
+      companyId:
+        type: string
+        description: 企業ID
+        minLength: 26
+        maxLength: 26
+        example: 01G516MQ0EQD1P5E3ANR7JHN6J
+      baseId:
+        type: string
+        description: 拠点ID
+        minLength: 26
+        maxLength: 26
+        nullable: true
+        example: 01G516V3EVFG5JT9YB5WD20TKN
+      accountName:
+        type: string
+        description: アカウント名
+        minLength: 1
+        maxLength: 50
+        example: 渡辺 太郎
+      mode:
+        type: integer
+        description: >
+          モード
+            * 0: 閲覧
+            * 1: 管理
+        enum:
+          - 0
+          - 1
+        example: 1
+
+accountRequest:
+  type: object
+  required:
+    - companyId
+    - mailAddress
+    - accountName
+    - mode
+  description: アカウント登録リクエスト
+  properties:
+    companyId:
+      type: string
+      description: 企業ID
+      minLength: 26
+      maxLength: 26
+      example: 01G516MQ0EQD1P5E3ANR7JHN6J
+    baseId:
+      type: string
+      description: 拠点ID
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+      minLength: 26
+      maxLength: 26
+    mailAddress:
+      type: string
+      description: メールアドレス
+      minLength: 1
+      maxLength: 128
+      example: taro.watanabe@kenbunroku.com
+    accountName:
+      type: string
+      description: アカウント名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺 太郎
+    mode:
+      type: integer
+      description: >
+        モード
+          * 0: 閲覧
+          * 1: 管理
+      enum:
+        - 0
+        - 1
+      example: 1
+
+accountResponse:
+  type: object
+  required:
+    - result
+  description: アカウント登録レスポンス
+  properties:
+    result:
+      type: string
+      description: パスワード結果
+      minLength: 8
+      maxLength: 8
+      example: YsZx96#F
+
+accountSearchResult:
+  type: object
+  description: アカウント検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 1
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 50
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 125
+    results:
+      type: array
+      items:
+        type: object
+        description: アカウント情報
+        required:
+          - parentId
+          - companyId
+          - companyName
+          - baseId
+          - baseName
+          - mailAddress
+          - accountId
+          - accountName
+          - mode
+        properties:
+          parentId:
+            type: string
+            description: 親企業ID
+            minLength: 26
+            maxLength: 26
+            nullable: true
+            example: 01G69X73EWAG9WVDQBW1QNMMAA
+          companyId:
+            type: string
+            description: 企業ID
+            minLength: 26
+            maxLength: 26
+            example: 01G516MQ0EQD1P5E3ANR7JHN6J
+          companyName:
+            type: string
+            description: 企業名
+            minLength: 1
+            maxLength: 50
+            example: 渡辺電機工業
+          baseId:
+            type: string
+            description: 拠点ID
+            minLength: 26
+            maxLength: 26
+            nullable: true
+            example: 01G516V3EVFG5JT9YB5WD20TKN
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            nullable: true
+            example: 大阪工場
+          mailAddress:
+            type: string
+            description: メールアドレス
+            minLength: 1
+            maxLength: 128
+            example: taro.watanabe@kenbunroku.com
+          accountId:
+            type: string
+            description: アカウントID
+            example: 01G516K5MX6N0V393P6NFQH8MX
+            minLength: 26
+            maxLength: 26
+          accountName:
+            type: string
+            description: アカウント名
+            minLength: 1
+            maxLength: 50
+            example: 渡辺 太郎
+          mode:
+            type: integer
+            description: >
+              モード
+                * 0: 閲覧
+                * 1: 管理
+            enum:
+              - 0
+              - 1
+            example: 1

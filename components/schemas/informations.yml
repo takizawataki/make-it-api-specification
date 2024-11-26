@@ -1,0 +1,81 @@
+informationSearchResult:
+  type: object
+  description: インフォメーション検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - nextPage
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 1
+    pageSize:
+      type: integer
+      description: ページサイズ
+      default: 10
+      example: 10
+    nextPage:
+      type: boolean
+      description: 次ページの有無
+      example: true
+    results:
+      type: array
+      items:
+        type: object
+        description: インフォメーション情報
+        required:
+          - informationId
+          - important
+          - read
+          - startTime
+          - endTime
+          - content
+        properties:
+          informationId:
+            type: string
+            description: インフォメーションID
+            minLength: 26
+            maxLength: 26
+            example: 01GQ1E5CDH5J0Y5D36BWK5CZD9
+          important:
+            type: boolean
+            description: 重要
+            example: true
+          read:
+            type: boolean
+            description: 既読
+            example: false
+          startTime:
+            type: string
+            format: date-time
+            description: 通知日時 (JST)
+            minLength: 20
+            maxLength: 20
+            example: "2023/01/05 09:00"
+          endTime:
+            type: string
+            format: date-time
+            description: 表示終了日時 (JST)
+            minLength: 20
+            maxLength: 20
+            example: "2023/01/09 13:00"
+          content:
+            type: string
+            description: 内容
+            minLength: 1
+            maxLength: 1000
+            example: 2023/01/09 1:00〜2023/01/09 2:00にサーバーメンテナンスを行います。
+
+informationUnread:
+  type: object
+  description: インフォメーション未読数
+  properties:
+    unread:
+      type: integer
+      description: 未読数
+      minimum: 0
+      maximum: 999
+      example: 4

@@ -1,0 +1,466 @@
+"reports/current":
+  get:
+    summary: リアルタイムデータ取得
+    description: 指定した計測グループ内のリアルタイムデータを取得する。
+    tags:
+      - 帳票・グラフ
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: group
+        required: true
+        description: 計測グループID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G797P08AJ621H6Y9S9KEFJ9Y
+      - in: query
+        name: period
+        required: false
+        description: 表示期間 (時間)
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 12
+          default: 1
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/reports.yml#/reportCurrentResult"
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"reports/past":
+  get:
+    summary: 過去データ取得
+    description: 指定した計測グループ内の過去データを取得する。
+    tags:
+      - 帳票・グラフ
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: group
+        required: true
+        description: 計測グループID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G797P08AJ621H6Y9S9KEFJ9Y
+      - in: query
+        name: type
+        description: >
+          データ種別
+            * 0 - 計測データ
+            * 1 - 30分
+            * 2 - 60分
+        schema:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+          default: 0
+          example: 1
+      - in: query
+        name: start
+        required: true
+        description: 表示開始日時
+        schema:
+          type: string
+          minLength: 12
+          maxLength: 12
+          example: 202210010900
+      - in: query
+        name: end
+        required: true
+        description: 表示終了日時
+        schema:
+          type: string
+          minLength: 12
+          maxLength: 12
+          example: 202210042100
+      - in: query
+        name: filter
+        required: false
+        description: "フィルター処理 (true:最大2軸表示, false:全軸表示)"
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: format
+        required: false
+        description: >
+          出力フォーマット
+            * json
+            * csv
+        schema:
+          type: string
+          enum:
+            - json
+            - csv
+          default: json
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/reports.yml#/reportPastResult"
+          "application/octet-stream":
+            schema:
+              type: string
+              description: CSVデータはShift-JISで出力
+              example: '"日時","1F詳細[グループ][kWh]合計値","2F詳細[グループ][kWh]合計値","3F詳細[グループ][kWh]合計値","4F詳細[グループ][kWh]合計値","その他[グループ][kWh]合計値","有力電力[kWh]横合計値"]\n"2022/06/17 11:00","33.8","62.4","40.7","15.8","56.5","237"\n"2022/06/17 11:05","52.7","28.6","54.4","34.3","78.1","246"\n"2022/06/17 11:10","55.1","23.1","36.7","27.5","65.7","238"'
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "415":
+        description: サポートされていないメディアタイプエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "422":
+        description: 処理不可能エラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"reports/summary":
+  get:
+    summary: 集計データ取得
+    description: 指定した計測グループ内の集計データを取得する。
+    tags:
+      - 帳票・グラフ
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: group
+        required: true
+        description: 計測グループID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G797P08AJ621H6Y9S9KEFJ9Y
+      - in: query
+        name: type
+        description: >
+          データ種別
+            * 0 - 日報30分
+            * 1 - 日報60分
+            * 2 - 月報
+            * 3 - 年報
+        schema:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          default: 0
+          example: 1
+      - in: query
+        name: date
+        required: true
+        description: 表示年月日 (年月日, 年月, 年)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20221005
+      - in: query
+        name: filter
+        required: false
+        description: "フィルター処理 (true:最大2軸表示, false:全軸表示)"
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: format
+        required: false
+        description: >
+          出力フォーマット
+            * json
+            * csv
+        schema:
+          type: string
+          enum:
+            - json
+            - csv
+          default: json
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/reports.yml#/reportSummaryResult"
+          "application/octet-stream":
+            schema:
+              type: string
+              description: CSVデータはShift-JISで出力
+              example:
+                '"日時","調布工場受電電力[kWh]","単相トランスNo.1 電力[kW]","三相トランスNo.1 電力量[kWh]"\n
+                "2022/10/5 0:00","53.32","21.02","25.22"\n
+                "2022/10/5 1:00","49.62","15.36","24.32"\n
+                ...略...
+                "2022/10/5 23:00","50.65","28.26","31.45"\n
+                "合計値","1526.52","512.35","761.3"\n
+                "最大値","102.3","30.54","40.25"\n
+                "最小値","49.62","10.25","23.45"\n
+                "平均値","63.5833","21.3479","31.7208"'
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "415":
+        description: サポートされていないメディアタイプエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "422":
+        description: 処理不可能エラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+
+"reports/compare":
+  get:
+    summary: 指定日比較データ取得
+    description: >
+      指定した計測グループ内の指定日比較データを取得する。
+      ※最低1件はdate1~4を指定する。
+    tags:
+      - 帳票・グラフ
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: group
+        required: true
+        description: 計測グループID
+        schema:
+          type: string
+          minLength: 26
+          maxLength: 26
+          example: 01G797P08AJ621H6Y9S9KEFJ9Y
+      - in: query
+        name: type
+        description: >
+          データ種別
+            * 0 - 日報30分
+            * 1 - 日報60分
+            * 2 - 月報
+            * 3 - 年報
+        schema:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          default: 0
+          example: 0
+      - in: query
+        name: date1
+        required: false
+        description: 比較対象年月日1 (年月日, 年月, 年)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20221001
+      - in: query
+        name: date2
+        required: false
+        description: 比較対象年月日2 (年月日, 年月, 年)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20221002
+      - in: query
+        name: date3
+        required: false
+        description: 比較対象年月日3 (年月日, 年月, 年)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20221003
+      - in: query
+        name: date4
+        required: false
+        description: 比較対象年月日4 (年月日, 年月, 年)
+        schema:
+          type: string
+          minLength: 4
+          maxLength: 8
+          example: 20221004
+      - in: query
+        name: filter
+        required: false
+        description: "フィルター処理 (true:最大2軸表示, false:全軸表示)"
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: format
+        required: false
+        description: >
+          出力フォーマット
+            * json
+            * csv
+        schema:
+          type: string
+          enum:
+            - json
+            - csv
+          default: json
+    responses:
+      "200":
+        description: 正常終了
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/reports.yml#/reportCompareResult"
+          "application/octet-stream":
+            schema:
+              type: string
+              description: CSVデータはShift-JISで出力
+              example: ',"ポイント１[kW]","ポイント１[kW]","ポイント１[kW]","ポイント２[A]","ポイント２[A]","ポイント２[A]","ポイント３[V]","ポイント３[V]","ポイント３[V]"\n,"2021/05/31","2021/06/01","2021/07/01","2021/05/31","2021/06/01","2021/07/01","2021/05/31","2021/06/01","2021/07/01"\n"00:00","1.1","1.1","1.1","1.1","1.1","1.1","1.1","1.1","1.1"\n"00:30","1.2","1.2","1.2","1.2","1.2","1.2","1.2","1.2","1.2"\n"01:00","1.5","1.5","1.5","1.5","1.5","1.5","1.5","1.5","1.5"\n"最大値","2.5","2.5","2.5","2.5","2.5","2.5","2.5","2.5","2.5"\n"最小値","1.1","1.1","1.1","1.1","1.1","1.1","1.1","1.1","1.1"\n"平均値","1.8","1.8","1.8","1.8","1.8","1.8","1.8","1.8","1.8"\n"合計値","30.0","30.0","30.0","30.0","30.0","30.0","30.0","30.0","30.0"'
+      "400":
+        description: パラメータエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "401":
+        description: API認証エラー (※ [API Gatewayから返却される](https://aws.amazon.com/jp/premiumsupport/knowledge-center/api-gateway-cognito-401-unauthorized/)）
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "403":
+        description: 実行権限エラー (※ [Amazon S3](https://aws.amazon.com/jp/premiumsupport/knowledge-center/s3-troubleshoot-403/)や[AWS WAF](https://dev.classmethod.jp/articles/aws-waf-custom-errorpage/)、[API Gateway](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html)から403エラーが返却される場合がある)
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "404":
+        description: 指定された情報が見つからない
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "415":
+        description: サポートされていないメディアタイプエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "422":
+        description: 処理不可能エラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"
+      "500":
+        description: サーバーエラー
+        content:
+          "application/json":
+            schema:
+              $ref: "../components/schemas/errors.yml#/error"

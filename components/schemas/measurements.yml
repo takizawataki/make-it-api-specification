@@ -1,0 +1,631 @@
+measurement:
+  type: object
+  description: 計測グループオブジェクト
+  required:
+  - groupName
+  - points
+  - isManualScale
+  properties:
+    baseId:
+      type: string
+      description: 拠点ID
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+      minLength: 26
+      maxLength: 26
+    baseName:
+      type: string
+      description: 拠点名
+      minLength: 1
+      maxLength: 50
+      example: 調布工場
+    parentId:
+      type: string
+      description: 親計測グループID
+      example: 01G625HT60F5GA8243HVRQM7DG
+      minLength: 26
+      maxLength: 26
+    parentName:
+      type: string
+      description: 親計測グループ名
+      minLength: 1
+      maxLength: 61
+      example: 調布_キュービクル/各階_電力量
+    groupName:
+      type: string
+      description: 計測グループ名
+      minLength: 1
+      maxLength: 30
+      example: 1階分電盤_電力量
+    parentLevel:
+      type: integer
+      description: >
+        所属階層レベル
+          * 1: 第一階層グループ
+          * 2: 第二階層グループ
+          * 3: 第三階層グループ
+      enum:
+        - 1
+        - 2
+        - 3
+      example: 2
+    childLevel:
+      type: integer
+      description: >
+        保持階層レベル
+          * 0: 無
+          * 1: 一階層
+          * 2: 二階層
+      enum:
+        - 0
+        - 1
+        - 2
+      example: 1
+    axis1Id:
+      type: string
+      description: 1軸単位ID
+      example: 01G6F4BXG8TFMPGDR5HKW28B0F
+      minLength: 26
+      maxLength: 26
+    axis1Unit:
+      type: string
+      description: 1軸単位
+      minLength: 3
+      maxLength: 67
+      example: kWh:有効電力量
+    axis1Max:
+      type: number
+      description: 1軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 100
+    axis1Min:
+      type: number
+      description: 1軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: -100
+    axis2Id:
+      type: string
+      description: 2軸単位ID
+      example: 01G878B1EY048Q1GWTJYGCK8QB
+      minLength: 26
+      maxLength: 26
+    axis2Unit:
+      type: string
+      description: 2軸単位
+      minLength: 3
+      maxLength: 67
+      example: V:電圧
+    axis2Max:
+      type: number
+      description: 2軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 10
+    axis2Min:
+      type: number
+      description: 2軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 0
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+      default: false
+    points:
+      type: array
+      description: 追加済みポイントリスト
+      items:
+        type: object
+        required:
+          - dispNo
+          - pointName
+          - symbolId
+          - unit
+          - aggregationType
+          - pointId
+          - pointType
+        properties:
+          dispNo:
+            type: integer
+            description: 表示順番
+            minimum: 0
+            example: 0
+          deviceName:
+            type: string
+            description: デバイス名
+            minLength: 1
+            maxLength: 50
+            example: 調布_トランス
+          pointName:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 三相トランスNo.1 電力量
+          accuPointType:
+            type: integer
+            description: >
+              蓄積ポイント種別
+                * 0 - 瞬時
+                * 1 - 積算
+                * 2 - 計算ポイント
+            enum:
+              - 0
+              - 1
+              - 2
+            example: 0
+          symbolId:
+            type: string
+            description: 記号ID
+            minLength: 26
+            maxLength: 26
+            example: 01G6F4BXG8TFMPGDR5HKW28B0F
+          unit:
+            type: string
+            description: 単位
+            minLength: 3
+            maxLength: 67
+            example: kWh:有効電力量
+          aggregationType:
+            type: integer
+            description: "集計方法 (0:合計, 1:最大, 2:最小, 3:平均, 4:瞬時, 5:なし)"
+            enum:
+              - 0 # 合計
+              - 1 # 最大
+              - 2 # 最小
+              - 3 # 平均
+              - 4 # 瞬時
+              - 5 # なし
+            example: 1
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          pointType:
+            type: integer
+            description: >
+              ポイント種別
+                * 0 - 蓄積
+                * 1 - 計算
+                * 2 - デマンド
+            enum:
+              - 0
+              - 1
+              - 2
+            example: 0
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            example: 調布工場
+
+measurementsPostRequest:
+  type: object
+  required:
+    - groupName
+    - points
+  description: 計測グループ登録リクエスト
+  properties:
+    baseId:
+      type: string
+      description: 拠点ID
+      minLength: 26
+      maxLength: 26
+      example: 01G516V3EVFG5JT9YB5WD20TKN
+    parentId:
+      type: string
+      description: 親計測グループID
+      minLength: 26
+      maxLength: 26
+      example: 01G625HT60F5GA8243HVRQM7DG
+    groupName:
+      type: string
+      description: 計測グループ名
+      minLength: 1
+      maxLength: 30
+      example: 2階分電盤_電力量
+    axis1Id:
+      type: string
+      description: 1軸単位ID
+      minLength: 26
+      maxLength: 26
+      example: 01G6F4BXG8TFMPGDR5HKW28B0F
+    axis1Max:
+      type: number
+      description: 1軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 100
+    axis1Min:
+      type: number
+      description: 1軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: -100
+    axis2Id:
+      type: string
+      description: 2軸単位ID
+      minLength: 26
+      maxLength: 26
+      example: 01G878B1EY048Q1GWTJYGCK8QB
+    axis2Max:
+      type: number
+      description: 2軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 10
+    axis2Min:
+      type: number
+      description: 2軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 0
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+      default: false
+    points:
+      type: array
+      items:
+        type: object
+        required:
+          - dispNo
+          - pointType
+          - pointId
+          - aggregationType
+        properties:
+          dispNo:
+            type: integer
+            description: 表示番号
+            minimum: 0
+            example: 0
+          pointType:
+            type: integer
+            description: >
+              ポイント種別
+                * 0 - 蓄積
+                * 1 - 計算
+                * 2 - デマンド
+            enum:
+              - 0
+              - 1
+              - 2
+            example: 0
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          aggregationType:
+            type: integer
+            description: "集計方法 (0:合計, 1:最大, 2:最小, 3:平均, 4:瞬時, 5: なし)"
+            enum:
+              - 0 # 合計
+              - 1 # 最大
+              - 2 # 最小
+              - 3 # 平均
+              - 4 # 瞬時
+              - 5 # なし
+            example: 1
+
+measurementsPutRequest:
+  type: object
+  required:
+    - groupName
+    - points
+  description: 計測グループ更新リクエスト
+  properties:
+    parentId:
+      type: string
+      description: 親計測グループID
+      minLength: 26
+      maxLength: 26
+      example: 01G625HT60F5GA8243HVRQM7DG
+    groupName:
+      type: string
+      description: 計測グループ名
+      minLength: 1
+      maxLength: 30
+      example: 1階分電盤_電力量
+    axis1Id:
+      type: string
+      description: 1軸単位ID
+      minLength: 26
+      maxLength: 26
+      example: 01G6F4BXG8TFMPGDR5HKW28B0F
+    axis1Max:
+      type: number
+      description: 1軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 100
+    axis1Min:
+      type: number
+      description: 1軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: -100
+    axis2Id:
+      type: string
+      description: 2軸単位ID
+      minLength: 26
+      maxLength: 26
+      example: 01G878B1EY048Q1GWTJYGCK8QB
+    axis2Max:
+      type: number
+      description: 2軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 10
+    axis2Min:
+      type: number
+      description: 2軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 0
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+      default: false
+    points:
+      type: array
+      items:
+        type: object
+        required:
+          - dispNo
+          - pointType
+          - pointId
+          - aggregationType
+        properties:
+          dispNo:
+            type: integer
+            description: 表示番号
+            minimum: 0
+            example: 0
+          pointType:
+            type: integer
+            description: >
+              ポイント種別
+                * 0 - 蓄積
+                * 1 - 計算
+                * 2 - デマンド
+            enum:
+              - 0
+              - 1
+              - 2
+            example: 0
+          pointId:
+            type: string
+            description: ポイントID
+            minLength: 26
+            maxLength: 26
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          aggregationType:
+            type: integer
+            description: "集計方法 (0:合計, 1:最大, 2:最小, 3:平均, 4:瞬時, 5:なし)"
+            enum:
+              - 0 # 合計
+              - 1 # 最大
+              - 2 # 最小
+              - 3 # 平均
+              - 4 # 瞬時
+              - 5 # なし
+            example: 1
+      minItems: 0
+      maxItems: 16
+
+measgroupSearchResult:
+  type: object
+  description: 計測グループ検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 3
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 176
+    results:
+      type: array
+      items:
+        type: object
+        description: 計測グループ情報
+        required:
+          - groupId1
+          - groupName1
+        properties:
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            example: 調布工場
+          groupId1:
+            type: string
+            description: 第一階層計測グループID
+            minLength: 26
+            maxLength: 26
+            example: 01G6F2XVFDYDYCRN23RMPGV53Z
+          groupName1:
+            type: string
+            description: 第一階層計測グループ名
+            minLength: 1
+            maxLength: 30
+            example: 調布_キュービクル
+          groupId2:
+            type: string
+            description: 第二階層計測グループID
+            nullable: true
+            minLength: 26
+            maxLength: 26
+            example: 01G6F2Y1EFKMB7DEX179D3A7Y3
+          groupName2:
+            type: string
+            description: 第二階層計測グループ名
+            nullable: true
+            minLength: 1
+            maxLength: 30
+            example: 各階_電力量
+          groupId3:
+            type: string
+            description: 第三階層計測グループID
+            nullable: true
+            minLength: 26
+            maxLength: 26
+            example: 01G6F2YH1Y66G3XHPANZBBH4SE
+          groupName3:
+            type: string
+            description: 第三階層計測グループ名
+            nullable: true
+            minLength: 1
+            maxLength: 30
+            example: 1階分電盤_電力量
+
+measgroupList:
+  type: array
+  description: 計測グループ一覧
+  items:
+    type: object
+    required:
+      - baseId
+      - groupId
+      - groupName
+    properties:
+      baseId:
+        type: string
+        description: 拠点ID
+        minLength: 26
+        maxLength: 26
+        example: 01GA10H7WWEAZZA3390J1EDQFN
+      groupId:
+        type: string
+        description: 計測グループID
+        minLength: 26
+        maxLength: 26
+        example: 01G5QSJ162G3QSE234HSY86AAK
+      groupName:
+        type: string
+        description: 計測グループ名
+        minLength: 1
+        maxLength: 92
+        example: 調布_キュービクル/各階_電力量/1階分電盤_電力量
+
+measgroupScalePutRequest:
+  type: object
+  description: グラフスケール更新リクエスト
+  properties:
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+      default: false
+    axis1Max:
+      type: number
+      description: 1軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 100
+    axis1Min:
+      type: number
+      description: 1軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: -100
+    axis2Max:
+      type: number
+      description: 2軸 スケール最大値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 10
+    axis2Min:
+      type: number
+      description: 2軸 スケール最小値
+      minimum: -999999999.9999
+      maximum: 999999999.9999
+      example: 0
+
+measgroupOrder:
+  type: array
+  description: 同階層グループ一覧
+  items:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: string
+        minLength: 26
+        maxLength: 26
+        example: 01G797P08AJ621H6Y9S9KEFJ9Y
+        nullable: true
+      name:
+        type: string
+        minLength: 1
+        maxLength: 50
+        example: 人事部
+
+measgroupOrderPutRequest:
+  type: object
+  description: 表示順更新リクエスト
+  required:
+    - step
+    - list
+  properties:
+    groupId:
+      type: string
+      description: 計測グループID
+      minLength: 26
+      maxLength: 26
+      example: 01G797P08AJ621H6Y9S9KEFJ9Y
+      nullable: true
+    step:
+      type: integer
+      description: >
+        対象階層
+          * 0: 拠点グループ
+          * 1: 第一階層グループ
+          * 2: 第二階層グループ
+          * 3: 第三階層グループ
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+      example: 2
+    list:
+      type: array
+      description: >
+        表示順設定対象のIDリスト
+          * step = 0 のとき、拠点ID
+          * それ以外のとき、計測グループID
+      items:
+        type: string
+        minLength: 26
+        maxLength: 26
+        example: 01G797P08AJ621H6Y9S9KEFJ9Y

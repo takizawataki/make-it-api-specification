@@ -1,0 +1,199 @@
+base:
+  type: object
+  description: 拠点オブジェクト
+  properties:
+    companyName:
+      type: string
+      description: 企業名
+      minLength: 1
+      maxLength: 50
+      example: 渡辺電機工業株式会社
+    baseName:
+      type: string
+      description: 拠点名
+      minLength: 1
+      maxLength: 50
+      example: 大阪工場
+    memo:
+      type: string
+      description: メモ
+      minLength: 0
+      maxLength: 1000
+      nullable: true
+      example: 〒564-0063\n大阪府吹田市江坂町1丁目14番33号
+    wlmDevices:
+      type: integer
+      description: WLMシリーズ デバイス登録数
+      minimum: 0
+      example: 2
+    wlmPoints:
+      description: WLMシリーズ ポイント数
+      minimum: 0
+      example: 7
+    wgwxDevices:
+      type: integer
+      description: WGWxシリーズ デバイス登録数
+      minimum: 0
+      example: 1
+    wgwxPoints:
+      type: integer
+      description: WGWxシリーズ ポイント数
+      minimum: 0
+      example: 8
+    totalPoints:
+      type: integer
+      description: 合計ポイント数
+      minimum: 0
+      example: 25
+    accuPoints:
+      type: integer
+      description: 蓄積ポイント数
+      minimum: 0
+      example: 10
+    calcPoints:
+      type: integer
+      description: 計算ポイント数
+      minimum: 0
+      example: 15
+
+basePostRequest:
+  type: object
+  required:
+    - baseName
+  description: 拠点登録リクエスト
+  properties:
+    baseName:
+      type: string
+      description: 拠点名
+      minLength: 1
+      maxLength: 50
+      example: 大阪工場
+    memo:
+      type: string
+      description: メモ
+      minLength: 0
+      maxLength: 1000
+      example: 〒564-0063\n大阪府吹田市江坂町1丁目14番33号
+
+basePutRequest:
+  type: object
+  description: 拠点更新リクエスト
+  properties:
+    baseName:
+      type: string
+      description: 拠点名
+      minLength: 1
+      maxLength: 50
+      example: 大阪工場
+    memo:
+      type: string
+      description: メモ
+      minLength: 0
+      maxLength: 1000
+      example: 〒564-0063\n大阪府吹田市江坂町1丁目14番33号
+
+baseSearchResult:
+  type: object
+  description: 拠点検索結果
+  required:
+    - pageNumber
+    - pageSize
+    - totalCount
+    - results
+  properties:
+    pageNumber:
+      type: integer
+      description: ページ番号
+      minimum: 0
+      example: 1
+    pageSize:
+      type: integer
+      description: ページサイズ
+      enum:
+        - 20
+        - 50
+        - 100
+      default: 20
+      example: 20
+    totalCount:
+      type: integer
+      description: 合計数
+      minimum: 0
+      example: 23
+    results:
+      type: array
+      items:
+        type: object
+        description: 拠点情報
+        required:
+          - baseId
+          - baseName
+          - wlmDevices
+          - wgwxDevices
+          - totalPoints
+          - accuPoints
+          - calcPoints
+        properties:
+          baseId:
+            type: string
+            description: 拠点ID
+            minLength: 26
+            maxLength: 26
+            example: 01G5G5RVGSHSTW0WETWTZFTKC3
+          baseName:
+            type: string
+            description: 拠点名
+            minLength: 1
+            maxLength: 50
+            example: 調布工場
+          wlmDevices:
+            type: integer
+            description: WLMシリーズ デバイス登録数
+            minimum: 0
+            example: 2
+          wgwxDevices:
+            type: integer
+            description: WGWxシリーズ デバイス登録数
+            minimum: 0
+            example: 1
+          totalPoints:
+            type: integer
+            description: 合計ポイント数
+            minimum: 0
+            example: 15
+          accuPoints:
+            type: integer
+            description: 蓄積ポイント数
+            minimum: 0
+            example: 10
+          calcPoints:
+            type: integer
+            description: 計算ポイント数
+            minimum: 0
+            example: 5
+
+baseList:
+  type: array
+  description: 拠点一覧
+  items:
+    type: object
+    description: 拠点情報
+    properties:
+      companyId:
+        type: string
+        description: 企業ID
+        minLength: 26
+        maxLength: 26
+        example: 01G516MQ0EQD1P5E3ANR7JHN6J
+      baseId:
+        type: string
+        description: 拠点ID
+        minLength: 26
+        maxLength: 26
+        example: 01G5G5RVGSHSTW0WETWTZFTKC3
+      baseName:
+        type: string
+        description: 拠点名
+        minLength: 1
+        maxLength: 50
+        example: 調布工場

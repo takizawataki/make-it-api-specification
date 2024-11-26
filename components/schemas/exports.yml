@@ -1,0 +1,79 @@
+exportTargetList:
+  type: array
+  description: エクスポート対象ポイント一覧
+  items:
+    type: object
+    required:
+      - pointId
+      - pointType
+      - aggregationType
+      - pointName
+      - deviceName
+      - unitName
+      - groups
+    properties:
+      pointId:
+        type: string
+        description: ポイントID
+        minLength: 26
+        maxLength: 26
+        example: 01G5JM8ACAGPDWQP3FPWD82H3S
+      pointType:
+        type: integer
+        description: >
+          ポイント種別
+            * 0 - 蓄積
+            * 1 - 計算
+            * 2 - デマンド
+        enum:
+          - 0
+          - 1
+          - 2
+        example: 0
+      aggregationType:
+        type: integer
+        description: >
+          集計方法
+            * 0 - 合計
+            * 1 - 最大
+            * 2 - 最小
+            * 3 - 平均
+            * 4 - 瞬時
+            * 5 - デマンド
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        example: 0
+      pointName:
+        type: string
+        description: ポイント名
+        minLength: 1
+        maxLength: 50
+        example: 三相トランスNo.1 電力量
+      deviceName:
+        type: string
+        description: デバイス名
+        minLength: 1
+        maxLength: 50
+        nullable: true
+        example: 調布_トランス
+      unitName:
+        type: string
+        description: ユニット名
+        minLength: 1
+        maxLength: 50
+        nullable: true
+        example: 2F制御盤
+      groups:
+        type: array
+        description: ポイントが紐づいている計測グループ情報
+        items:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: 電力計測グループ
+        example: ["電力計測グループ", "本社_1F監視"]

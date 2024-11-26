@@ -1,0 +1,528 @@
+reportCurrentResult:
+  type: object
+  description: リアルタイムデータ結果
+  required:
+    - units
+    - points
+    - times
+    - isManualScale
+  properties:
+    units:
+      type: array
+      description: 単位
+      items:
+        type: object
+        required:
+          - symbol
+          - name
+        properties:
+          symbol:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: kW
+          name:
+            type: string
+            description: 単位名称
+            minLength: 1
+            maxLength: 50
+            example: 有効電力
+          max:
+            type: number
+            description: スケール最大値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: 0
+          min:
+            type: number
+            description: スケール最小値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: -100
+        minItems: 1
+        maxItems: 2
+    points:
+      type: array
+      description: ポイントデータ
+      items:
+        type: object
+        required:
+          - dispNo
+          - name
+          - current
+          - di
+          - axis
+          - values
+        properties:
+          id:
+            type: string
+            description: ポイントID
+            example: 01G5JM8ACAGPDWQP3FPWD82H3S
+          dispNo:
+            type: number
+            description: 表示順番
+            example: 0
+            minimum: 0
+          name:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 単相トランスNo.1 電力
+          current:
+            type: number
+            description: 最終取得値
+            example: 55.24
+          di:
+            type: boolean
+            description: デジタル入力かどうか
+            example: false
+          axis:
+            type: number
+            description: 軸
+            minimum: 0
+            maximum: 1
+            example: 1
+          values:
+            type: array
+            description: 直近データ
+            items:
+              type: number
+              nullable: true
+            example: [43.9, 55.12, 55.33, null, 55.24]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+      example:
+        [
+          2022-10-05 16:00,
+          2022-10-05 16:15,
+          2022-10-05 16:30,
+          2022-10-05 16:45,
+          2022-10-05 17:00,
+        ]
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+
+reportPastResult:
+  type: object
+  description: 過去データ結果
+  required:
+    - units
+    - points
+    - times
+    - isManualScale
+  properties:
+    units:
+      type: array
+      description: 単位
+      items:
+        type: object
+        required:
+          - symbol
+          - name
+        properties:
+          symbol:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: kW
+          name:
+            type: string
+            description: 単位名称
+            minLength: 1
+            maxLength: 50
+            example: 有効電力
+          max:
+            type: number
+            description: スケール最大値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: 0
+          min:
+            type: number
+            description: スケール最小値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: -100
+        minItems: 1
+        maxItems: 2
+    points:
+      type: array
+      description: ポイントデータ
+      items:
+        type: object
+        required:
+          - dispNo
+          - name
+          - axis
+          - summary
+          - values
+        properties:
+          dispNo:
+            type: number
+            description: 表示順番
+            example: 0
+            minimum: 0
+          name:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 単相トランスNo.1 電力
+          axis:
+            type: number
+            description: 軸
+            minimum: 0
+            example: 1
+          summary:
+            type: object
+            required:
+              - total
+              - max
+              - min
+              - avg
+            properties:
+              total:
+                type: number
+                description: 合計値
+                example: 2487.8
+              max:
+                type: number
+                description: 最大値
+                example: 58.2
+              min:
+                type: number
+                description: 最小値
+                example: 38.8
+              avg:
+                type: number
+                description: 平均値
+                example: 42.4
+          values:
+            type: array
+            description: 過去データ
+            items:
+              type: number
+              nullable: true
+            example: [45.1, 43.9, 55.12, 54.2, null, 55, 55.24]
+          lackFlags:
+            type: array
+            description: >
+              計算ポイントデータ欠損フラグ
+              (0: 欠損なし,
+              1: 欠損あり,
+              null: データ無し)
+            items:
+              type: number
+              nullable: true
+            example: [0, 0, 1, 0, null, 0, 0]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+      example:
+        [
+          2022-10-04 09:00,
+          2022-10-04 09:30,
+          2022-10-04 10:00,
+          2022-10-04 10:30,
+          2022-10-04 11:00,
+          2022-10-04 11:30,
+          2022-10-04 12:00,
+        ]
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+
+reportSummaryResult:
+  type: object
+  description: 集計データ結果
+  required:
+    - units
+    - points
+    - times
+    - isManualScale
+  properties:
+    units:
+      type: array
+      description: 単位
+      items:
+        type: object
+        required:
+          - symbol
+          - name
+        properties:
+          symbol:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: kW
+          name:
+            type: string
+            description: 単位名称
+            minLength: 1
+            maxLength: 50
+            example: 有効電力
+          max:
+            type: number
+            description: スケール最大値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: 0
+          min:
+            type: number
+            description: スケール最小値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: -100
+        minItems: 1
+        maxItems: 2
+    points:
+      type: array
+      description: ポイントデータ
+      items:
+        type: object
+        required:
+          - dispNo
+          - name
+          - date
+          - axis
+          - summary
+          - values
+        properties:
+          dispNo:
+            type: number
+            description: 表示順番
+            example: 0
+            minimum: 0
+          name:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 単相トランスNo.1 電力
+          date:
+            type: string
+            format: date-time
+            description: 代表年月日
+            minLength: 20
+            maxLength: 20
+            example: "2022-10-05T00:00:00Z"
+          axis:
+            type: number
+            description: 軸
+            minimum: 0
+            example: 1
+          summary:
+            type: object
+            required:
+              - total
+              - max
+              - min
+              - avg
+            properties:
+              total:
+                type: number
+                description: 合計値
+                example: 2487.8
+              max:
+                type: number
+                description: 最大値
+                example: 58.2
+              min:
+                type: number
+                description: 最小値
+                example: 38.8
+              avg:
+                type: number
+                description: 平均値
+                example: 42.4
+          values:
+            type: array
+            description: 集計データ
+            items:
+              type: number
+              nullable: true
+            example: [43.9, 55.12, 55.33, null, 55.24]
+          lackFlags:
+            type: array
+            description: >
+              計算ポイントデータ欠損フラグ
+              (0: 欠損なし,
+              1: 欠損あり,
+              null: データ無し)
+            items:
+              type: number
+              nullable: true
+            example: [0, 0, 1, null, 0]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+      example:
+        [
+          2022-10-05 16:00,
+          2022-10-05 17:00,
+          2022-10-05 18:00,
+          2022-10-05 19:00,
+          2022-10-05 20:00,
+        ]
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
+
+reportCompareResult:
+  type: object
+  description: 比較データ結果
+  required:
+    - units
+    - points
+    - times
+    - isManualScale
+  properties:
+    units:
+      type: array
+      description: 単位
+      items:
+        type: object
+        required:
+          - symbol
+          - name
+        properties:
+          symbol:
+            type: string
+            description: 記号単位
+            minLength: 1
+            maxLength: 16
+            example: kW
+          name:
+            type: string
+            description: 単位名称
+            minLength: 1
+            maxLength: 50
+            example: 有効電力
+          max:
+            type: number
+            description: スケール最大値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: 0
+          min:
+            type: number
+            description: スケール最小値
+            minimum: -999999999.9999
+            maximum: 999999999.9999
+            example: -100
+        minItems: 1
+        maxItems: 2
+    points:
+      type: array
+      description: ポイントデータ
+      items:
+        type: object
+        required:
+          - dispNo
+          - name
+          - date
+          - axis
+          - summary
+          - values
+        properties:
+          dispNo:
+            type: number
+            description: 表示順番
+            example: 0
+            minimum: 0
+          name:
+            type: string
+            description: ポイント名
+            minLength: 1
+            maxLength: 50
+            example: 単相トランスNo.1 電力
+          date:
+            type: string
+            format: date-time
+            description: 代表年月日
+            minLength: 20
+            maxLength: 20
+            example: "2022-10-01T00:00:00Z"
+          axis:
+            type: number
+            description: 軸
+            minimum: 0
+            example: 1
+          summary:
+            type: object
+            required:
+              - total
+              - max
+              - min
+              - avg
+            properties:
+              total:
+                type: number
+                description: 合計値
+                example: 2487.8
+              max:
+                type: number
+                description: 最大値
+                example: 58.2
+              min:
+                type: number
+                description: 最小値
+                example: 38.8
+              avg:
+                type: number
+                description: 平均値
+                example: 42.4
+          values:
+            type: array
+            description: 直近データ
+            items:
+              type: number
+              nullable: true
+            example: [43.9, 55.12, 55.33, null, 55.24]
+          lackFlags:
+            type: array
+            description: >
+              計算ポイントデータ欠損フラグ
+              (0: 欠損なし,
+              1: 欠損あり,
+              null: データ無し)
+            items:
+              type: number
+              nullable: true
+            example: [0, 0, 1, null, 0]
+    times:
+      type: array
+      description: 計測時間
+      items:
+        type: string
+        format: date-time
+      example:
+        [
+          00:00:00,
+          00:30:00,
+          01:00:00,
+          01:30:00,
+          02:00:00,
+          02:00:00,
+          02:30:00,
+          03:00:00,
+        ]
+    isManualScale:
+      type: boolean
+      description: 手動スケール(true)/自動スケール(false)
+      example: false
